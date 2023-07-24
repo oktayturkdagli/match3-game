@@ -29,14 +29,14 @@ public class InputManager : Singleton<InputManager>
     
     private void GetEditorInputs()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && canClick)
             DetectHitObject(Input.mousePosition);
     }
     
     private void GetMobileTouches()
     {
         Touch touch = Input.GetTouch(0);
-        if (touch.phase.Equals(TouchPhase.Ended))
+        if (touch.phase.Equals(TouchPhase.Ended) && canClick)
             DetectHitObject(touch.position);
     }
     

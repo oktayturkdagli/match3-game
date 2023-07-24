@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FillManager : Singleton<FillManager>
@@ -10,7 +11,7 @@ public class FillManager : Singleton<FillManager>
     {
         for (var i = 0; i < gridManager.changingColumns.Count; i++)
         {
-            var item = gridManager.changingColumns.ElementAt(i);
+            KeyValuePair<int, int> item = gridManager.changingColumns.ElementAt(i);
             var itemKey = item.Key;
             var itemValue = item.Value;
             
@@ -40,25 +41,5 @@ public class FillManager : Singleton<FillManager>
         }
         
         FallManager.Instance.Fall();
-    }
-    
-    public void FillOnlyOneBlock(BlockTypes blockType, Vector2 gridIndex)
-    {
-        int x = (int)gridIndex.x;
-        int y = (int)gridIndex.y;
-        Vector3 spawnPos = gridManager.allPositionObjects[(int)gridIndex.x].rows[(int)gridIndex.y].transform.position;
-        GameObject spawnedBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity, gridManager.SpawnedBlocksParent);
-        gridManager.allBlocks[x].rows[y] = spawnedBlock;
-        
-        BlockTypes currentBlockType = blockType;
-        
-        var myBlockType = BlockFactory.GetBlockWithBlockType(currentBlockType);
-        Block currentBlock = spawnedBlock.AddComponent(myBlockType.GetType()) as Block;
-        
-        currentBlock.gridIndex = gridIndex;
-        currentBlock.target = gridManager.allPositionObjects[x].rows[y].transform;
-        currentBlock.SetupBlock();
-        
-        gridManager.DecreaseChangingColumn((int)gridIndex.x);
     }
 }

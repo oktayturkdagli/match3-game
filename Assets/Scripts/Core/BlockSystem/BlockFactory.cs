@@ -6,54 +6,52 @@ using System.Collections.Generic;
 public static class BlockFactory
 {
     private static Dictionary<BlockTypes, Type> blocksByName;
+
     private static bool IsInitialized => blocksByName != null;
-    
-    private static void InitBlockFactory()
+
+    private static void InitializeBlockFactory()
     {
         if (IsInitialized)
-        {
             return;
-        }
         
-        var blockTypes = Assembly.GetAssembly(typeof(Block)).GetTypes()
-            .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Block)) 
-                             && !myType.IsSubclassOf(typeof(CubeBlock)));
-        
+        var blockTypes = Assembly.GetAssembly(typeof(Block))
+            .GetTypes()
+            .Where(type => IsBlockClass(type) && IsNotCubeBlock(type));
+
         blocksByName = new Dictionary<BlockTypes, Type>();
-        
+
         foreach (var type in blockTypes)
         {
-            var temp = Activator.CreateInstance(type) as Block;
-            blocksByName.Add(temp.blockType, type);
+            var blockInstance = CreateBlockInstance(type);
+            blocksByName.Add(blockInstance.blockType, type);
         }
     }
-    
-    public static void Reset()
+
+    private static bool IsBlockClass(Type type)
     {
-        var blockTypes = Assembly.GetAssembly(typeof(Block)).GetTypes()
-            .Where(myType => myType.IsClass && myType.IsSubclassOf(typeof(Block)) 
-                                            && !myType.IsSubclassOf(typeof(CubeBlock)));
-
-        blocksByName = new Dictionary<BlockTypes, Type>();
-
-        foreach (var type in blockTypes)
-        {
-            var temp = Activator.CreateInstance(type) as Block;
-            blocksByName.Add(temp.blockType, type);
-        }
+        return type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(Block));
     }
-    
+
+    private static bool IsNotCubeBlock(Type type)
+    {
+        return !type.IsSubclassOf(typeof(CubeBlock));
+    }
+
+    private static Block CreateBlockInstance(Type type)
+    {
+        return Activator.CreateInstance(type) as Block;
+    }
+
     public static Block GetBlockWithBlockType(BlockTypes blockType)
     {
-        InitBlockFactory();
-        
-        if (blocksByName.ContainsKey(blockType))
+        InitializeBlockFactory();
+
+        if (blocksByName.TryGetValue(blockType, out var type))
         {
-            Type type = blocksByName[blockType];
-            var block = Activator.CreateInstance(type) as Block;
+            var block = CreateBlockInstance(type);
             return block;
         }
-        
+
         return null;
     }
 }
