@@ -12,9 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe661f949664cfeae9a1cab73ca6541, type: 3}
   m_Name: SharedData
   m_EditorClassIdentifier: 
-  blueCubeBlockSprite: {fileID: 21300000, guid: a54ae4f300eeedb49b50150219e17c9b, type: 3}
-  greenCubeBlockSprite: {fileID: 21300000, guid: 0a155b61812076a41a7f72e30fc5c04d, type: 3}
-  pinkCubeBlockSprite: {fileID: 21300000, guid: 65f0687260fbf0646bef644da7cae4ec, type: 3}
-  purpleCubeBlockSprite: {fileID: 21300000, guid: 5195d1244e051f24f891fd99f198b3fe, type: 3}
-  redCubeBlockSprite: {fileID: 21300000, guid: 3e70f6d87211ded4f92baf14977936f7, type: 3}
-  yellowCubeBlockSprite: {fileID: 21300000, guid: 400c8703ddda1824f87be724e84751c9, type: 3}
+  blueDefaultSprite: {fileID: 21300000, guid: a54ae4f300eeedb49b50150219e17c9b, type: 3}
+  blueASprite: {fileID: 21300000, guid: bc11ae3dfdae5394ab00ca5d0786f801, type: 3}
+  blueBSprite: {fileID: 21300000, guid: 8d18342fd6fdb8f49be21e8cdd92b8b7, type: 3}
+  blueCSprite: {fileID: 21300000, guid: 3a8c0920998367845851ab50b74e2c7a, type: 3}
+  greenDefaultSprite: {fileID: 21300000, guid: 0a155b61812076a41a7f72e30fc5c04d, type: 3}
+  greenASprite: {fileID: 21300000, guid: f05cfc502f9c26142b163a08874fdef6, type: 3}
+  greenBSprite: {fileID: 21300000, guid: e618125fab4c4c04eb0d4f82bf1c2b41, type: 3}
+  greenCSprite: {fileID: 21300000, guid: fdd9b6ed9773c0846a396520480299d8, type: 3}
+  pinkDefaultSprite: {fileID: 21300000, guid: 65f0687260fbf0646bef644da7cae4ec, type: 3}
+  pinkASprite: {fileID: 21300000, guid: ee264e988665e02409da7122817ddf59, type: 3}
+  pinkBSprite: {fileID: 21300000, guid: 25fb36793fd2fdc46adbfa146f39bc56, type: 3}
+  pinkCSprite: {fileID: 21300000, guid: 239e980d62fe7ab43870d9f627a87126, type: 3}
+  purpleDefaultSprite: {fileID: 21300000, guid: 5195d1244e051f24f891fd99f198b3fe, type: 3}
+  purpleASprite: {fileID: 21300000, guid: b9cf157ba806c4f44b057ed48908fb20, type: 3}
+  purpleBSprite: {fileID: 21300000, guid: b3f7516a991c5b2498e6344fdb33baaf, type: 3}
+  purpleCSprite: {fileID: 21300000, guid: ffca1dc7fdbd4264592942d9c86f3cdb, type: 3}
+  redDefaultSprite: {fileID: 21300000, guid: 3e70f6d87211ded4f92baf14977936f7, type: 3}
+  redASprite: {fileID: 21300000, guid: c98a6d3f670b80a40b7be6ad54028f0c, type: 3}
+  redBSprite: {fileID: 21300000, guid: bc180dce9e8212046beb5ef1eae25385, type: 3}
+  redCSprite: {fileID: 21300000, guid: 2f6b874fee679c546a656f805542b136, type: 3}
+  yellowDefaultSprite: {fileID: 21300000, guid: 400c8703ddda1824f87be724e84751c9, type: 3}
+  yellowASprite: {fileID: 21300000, guid: f46414bcab112da44ab9c7e435406a71, type: 3}
+  yellowBSprite: {fileID: 21300000, guid: f226953e4f64fcf4c87fdc83d27bc289, type: 3}
+  yellowCSprite: {fileID: 21300000, guid: 79fc4d8e55eb0bf42ad644dc6ab0a1cf, type: 3}

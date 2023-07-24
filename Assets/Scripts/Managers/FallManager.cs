@@ -7,7 +7,7 @@ public class FallManager : Singleton<FallManager>
     [SerializeField] private GridManager gridManager;
     [SerializeField] private Transform spawnedBlocksParent;
     [SerializeField] private GameObject blockPrefab;
-
+    
     public void Fall()
     {
         for (var i = 0; i < gridManager.changingColumns.Count; i++)

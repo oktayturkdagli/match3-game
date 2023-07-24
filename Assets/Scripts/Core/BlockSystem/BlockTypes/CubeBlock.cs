@@ -116,19 +116,19 @@ public class CubeBlock : Block
         switch (cubeType)
         {
             case CubeTypes.Blue:
-                return GameManager.Instance.sharedData.blueCubeBlockSprite;
+                return GameManager.Instance.sharedData.blueDefaultSprite;
             case CubeTypes.Green:
-                return GameManager.Instance.sharedData.greenCubeBlockSprite;
+                return GameManager.Instance.sharedData.greenDefaultSprite;
             case CubeTypes.Pink:
-                return GameManager.Instance.sharedData.pinkCubeBlockSprite;
+                return GameManager.Instance.sharedData.pinkDefaultSprite;
             case CubeTypes.Purple:
-                return GameManager.Instance.sharedData.purpleCubeBlockSprite;
+                return GameManager.Instance.sharedData.purpleDefaultSprite;
             case CubeTypes.Red:
-                return GameManager.Instance.sharedData.redCubeBlockSprite;
+                return GameManager.Instance.sharedData.redDefaultSprite;
             case CubeTypes.Yellow:
-                return GameManager.Instance.sharedData.yellowCubeBlockSprite;
+                return GameManager.Instance.sharedData.yellowDefaultSprite;
         }
         
-        return GameManager.Instance.sharedData.blueCubeBlockSprite;
+        return GameManager.Instance.sharedData.blueDefaultSprite;
     }
 }

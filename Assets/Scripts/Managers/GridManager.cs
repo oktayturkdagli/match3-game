@@ -104,8 +104,7 @@ public class GridManager : MonoBehaviour
         // Clear placeholder objects
         for (var i = spawnedPositionObjectsParent.childCount - 1; i >= 0; i--)
             DestroyImmediate(spawnedPositionObjectsParent.GetChild(i).gameObject);
-
-        // Clear placeholder objects
+        
         for (var i = spawnedBlocksParent.childCount - 1; i >= 0; i--)
             DestroyImmediate(spawnedBlocksParent.GetChild(0).gameObject);
         
@@ -150,14 +149,11 @@ public class GridManager : MonoBehaviour
     
     public void DefineBlockProperties(GameObject blockObj, int xIndex, int yIndex, Transform spawnedPositionTransform)
     {
-        BlockTypes currentBlockType = blockTypes[xIndex, yIndex];
-        CubeTypes currentCubeType = cubeTypes[xIndex, yIndex];
-        
-        var blockBase = BlockFactory.GetBlockWithBlockType(currentBlockType);
+        var blockBase = BlockFactory.GetBlockWithBlockType(blockTypes[xIndex, yIndex]);
         Block currentBlock = blockObj.AddComponent(blockBase.GetType()) as Block;
         
         if (blockBase is CubeBlock)
-            blockObj.GetComponent<CubeBlock>().cubeType = currentCubeType;
+            blockObj.GetComponent<CubeBlock>().cubeType = cubeTypes[xIndex, yIndex];
         
         currentBlock.gridIndex = new Vector2(xIndex, yIndex);
         currentBlock.target = spawnedPositionTransform;
