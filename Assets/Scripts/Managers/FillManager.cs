@@ -18,17 +18,16 @@ public class FillManager : Singleton<FillManager>
             int rowLength = gridManager.allBlocks[itemKey].columns.Length;
             for (var j = rowLength - 1; j >= 0; j--)
             {
-                if (gridManager.allBlocks[itemKey].columns[j] == null || (gridManager.allBlocks[itemKey].columns[j] && gridManager.allBlocks[itemKey].columns[j].GetComponent<Block>().target == null))
+                if (gridManager.allBlocks[itemKey].columns[j] == null || (gridManager.allBlocks[itemKey].columns[j] && gridManager.allBlocks[itemKey].columns[j].GetComponent<CubeBlock>().target == null))
                 {
                     for (var k = j; k >= 0; k--)
                     {
-                        if (gridManager.allBlocks[itemKey].columns[k] && gridManager.allBlocks[itemKey].columns[k].GetComponent<Block>().target != null)
+                        if (gridManager.allBlocks[itemKey].columns[k] && gridManager.allBlocks[itemKey].columns[k].GetComponent<CubeBlock>().target != null)
                         {
                             GameObject newTargetObj = gridManager.allPositionObjects[itemKey].columns[j].gameObject;
-                            Block currentBlock = gridManager.allBlocks[itemKey].columns[k].gameObject.GetComponent<Block>();
+                            CubeBlock currentBlock = gridManager.allBlocks[itemKey].columns[k].gameObject.GetComponent<CubeBlock>();
                             currentBlock.target = newTargetObj.transform;
                             currentBlock.gridIndex = new Vector2(itemKey, j);
-                            
                             gridManager.allBlocks[itemKey].columns[j] = gridManager.allBlocks[itemKey].columns[k];
                             gridManager.allBlocks[itemKey].columns[k] = null;
                             currentBlock.UpdateSortingOrder();

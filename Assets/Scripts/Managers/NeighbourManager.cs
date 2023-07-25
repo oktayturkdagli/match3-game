@@ -5,11 +5,6 @@ public class NeighbourManager : Singleton<NeighbourManager>
 {
     [SerializeField] private GridManager gridManager;
     List<GameObject> neighbours = new List<GameObject>();
-
-    public void DoSingleObjAction(Vector2 gridIndex)
-    {
-        gridManager.AddNewChangingColumn((int)gridIndex.x);
-    }
     
     public List<GameObject> FindSameTypeNeighbours(CubeTypes cubeType, Vector2 gridIndex)
     {
@@ -31,8 +26,8 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (x + 1 < gridManager.allBlocks.Length)
         {
-            Block curBlock = gridManager.allBlocks[x + 1].columns[y].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x + 1].columns[y].GetComponent<CubeBlock>().cubeType == cubeType)
+            CubeBlock curBlock = gridManager.allBlocks[x + 1].columns[y].GetComponent<CubeBlock>();
+            if (curBlock.cubeType == cubeType)
             {
                 if (!neighbours.Contains(gridManager.allBlocks[x + 1].columns[y]))
                 {
@@ -45,8 +40,8 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (y + 1 < gridManager.allBlocks[0].columns.Length)
         {
-            Block curBlock = gridManager.allBlocks[x].columns[y + 1].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x].columns[y + 1].GetComponent<CubeBlock>().cubeType == cubeType)
+            CubeBlock curBlock = gridManager.allBlocks[x].columns[y + 1].GetComponent<CubeBlock>();
+            if (curBlock.cubeType == cubeType)
             {
                 if (!neighbours.Contains(gridManager.allBlocks[x].columns[y + 1]))
                 {
@@ -59,8 +54,8 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (x - 1 >= 0)
         {
-            Block curBlock = gridManager.allBlocks[x - 1].columns[y].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x - 1].columns[y].GetComponent<CubeBlock>().cubeType == cubeType)
+            CubeBlock curBlock = gridManager.allBlocks[x - 1].columns[y].GetComponent<CubeBlock>();
+            if (curBlock.GetComponent<CubeBlock>().cubeType == cubeType)
             {
                 if (!neighbours.Contains(gridManager.allBlocks[x - 1].columns[y]))
                 {
@@ -73,9 +68,8 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (y - 1 >= 0)
         {
-            Block curBlock = gridManager.allBlocks[x].columns[y - 1].GetComponent<Block>();
-            if (curBlock is CubeBlock &&
-                 gridManager.allBlocks[x].columns[y - 1].GetComponent<CubeBlock>().cubeType == cubeType)
+            CubeBlock curBlock = gridManager.allBlocks[x].columns[y - 1].GetComponent<CubeBlock>();
+            if (curBlock.cubeType == cubeType)
             {
                 if (!neighbours.Contains(gridManager.allBlocks[x].columns[y - 1]))
                 {

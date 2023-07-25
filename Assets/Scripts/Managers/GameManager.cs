@@ -1,9 +1,11 @@
 public class GameManager : Singleton<GameManager>
 {
     public SharedData sharedData;
-    
-    private void Awake()
+
+    protected override void Awake()
     {
+        base.Awake();
+        
         Utility.CallASingleton<AudioManager>();
         Utility.CallASingleton<EffectsController>();
         Utility.CallASingleton<FallManager>();
@@ -16,6 +18,5 @@ public class GameManager : Singleton<GameManager>
         Utility.CallASingleton<GoalPanel>();
         
         Utility.CallASingleton<UIManager>();
-        Utility.CallASingleton<UIFitter>();
     }
 }

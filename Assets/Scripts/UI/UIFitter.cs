@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 // This class allows the properties of the canvas to change when the screen size of the application changes.
-public class UIFitter : Singleton<UIFitter>
+public class UIFitter : MonoBehaviour
 {
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private RectTransform rectTransform;

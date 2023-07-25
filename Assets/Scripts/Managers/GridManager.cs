@@ -138,8 +138,8 @@ public class GridManager : MonoBehaviour
     
     public void DefineBlockProperties(GameObject blockObj, int xIndex, int yIndex, Transform spawnedPositionTransform)
     {
-        Block currentBlock = blockObj.AddComponent<CubeBlock>();
-        blockObj.GetComponent<CubeBlock>().cubeType = cubeTypes[xIndex, yIndex];
+        CubeBlock currentBlock = blockObj.AddComponent<CubeBlock>();
+        currentBlock.cubeType = cubeTypes[xIndex, yIndex];
         currentBlock.gridIndex = new Vector2(xIndex, yIndex);
         currentBlock.target = spawnedPositionTransform;
         currentBlock.SetupBlock();

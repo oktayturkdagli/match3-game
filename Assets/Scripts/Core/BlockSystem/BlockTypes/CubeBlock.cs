@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class CubeBlock : Block
+public class CubeBlock : MonoBehaviour
 {
-    public override BlockTypes blockType => BlockTypes.Cube;
-    public override Vector3 spriteSize => new Vector3(0.5f, 0.5f, 0.5f);
+    public Vector2 gridIndex;
+    public Transform target;
+    private Vector3 spriteSize => new Vector3(0.5f, 0.5f, 0.5f);
     
     private SpriteRenderer mySpriteRenderer;
     public CubeTypes cubeType;
     public bool canTapped = true;
     
     public static event Action<int, int> cubeLeavedGridEvent;
-
-    public override void DoTappedActions()
+    
+    public void DoTappedActions()
     {
         if (!canTapped) 
             return;
@@ -63,7 +64,7 @@ public class CubeBlock : Block
         FillManager.Instance.Fill();
     }
     
-    public override void SetupBlock()
+    public void SetupBlock()
     {
         mySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         mySpriteRenderer.transform.localScale = spriteSize;
@@ -71,7 +72,7 @@ public class CubeBlock : Block
         mySpriteRenderer.sprite = GetMySprite();
     }
     
-    public override void MoveToTarget(float arriveTime)
+    public void MoveToTarget(float arriveTime)
     {
         DOTween.Kill(transform);
         transform.DOKill();
@@ -81,23 +82,23 @@ public class CubeBlock : Block
         });
     }
     
-    public override void UpdateSortingOrder()
+    public void UpdateSortingOrder()
     {
         if (!mySpriteRenderer)
             mySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         
         mySpriteRenderer.sortingOrder = -(int)gridIndex.y + 1;
     }
-    
-    public override void SetSortingLayerName(string layerName)
+
+    private void SetSortingLayerName(string layerName)
     {
         if (!mySpriteRenderer)
             mySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         
         mySpriteRenderer.sortingLayerName = layerName;
     }
-    
-    public override void SetSortingOrder(int index)
+
+    private void SetSortingOrder(int index)
     {
         if (!mySpriteRenderer)
             mySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
@@ -107,14 +108,6 @@ public class CubeBlock : Block
     
     private Sprite GetMySprite()
     {
-        if (!GameManager.Instance)
-        {
-            var instance = GameManager.Instance;
-        }
-
-        else if (!GameManager.Instance.sharedData)
-            Debug.Log("sharedData is null");
-        
         switch (cubeType)
         {
             case CubeTypes.Blue:

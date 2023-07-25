@@ -49,7 +49,7 @@ public class InputManager : Singleton<InputManager>
             {
                 GameObject hitObj = hitCollider.gameObject;
                 if (hitObj.CompareTag("Block"))
-                    hitObj.gameObject.GetComponent<Block>().DoTappedActions();
+                    hitObj.gameObject.GetComponent<CubeBlock>().DoTappedActions();
             }
         } 
     }

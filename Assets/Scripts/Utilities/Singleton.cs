@@ -3,30 +3,36 @@
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
-    private static bool isApplicationQuitting = false;
-    
+
     public static T Instance
     {
         get
         {
-            if (!instance && !isApplicationQuitting)
-            {
-                instance = FindFirstObjectByType(typeof(T)) as T;
-                if (!instance)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name);
-                    instance = obj.AddComponent<T>();
-                    DontDestroyOnLoad(obj);
-                }
-            }
+            if (instance) 
+                return instance;
+            
+            instance = FindAnyObjectByType<T>();
+            
+            if (instance) 
+                return instance;
+            
+            GameObject singletonObject = new GameObject(typeof(T).Name);
+            instance = singletonObject.AddComponent<T>();
             return instance;
         }
     }
-    
-    private void OnApplicationQuit()
+
+    protected virtual void Awake()
     {
-        instance = null;
-        Destroy(gameObject);
-        isApplicationQuitting = true;
+        if (instance == null)
+        {
+            instance = this as T;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            if (this != instance)
+                Destroy(gameObject);
+        }
     }
 }

@@ -26,7 +26,7 @@ public class FallManager : Singleton<FallManager>
                 GameObject spawnedBlockObj = AddRandomBlockToGrid(itemKey, yIndex, spawnPosition, targetTransform);
                 
                 float arriveTime = Mathf.Clamp(Vector3.Distance(targetTransform.position, spawnPosition)*0.2f,0.5f,0.8f);
-                spawnedBlockObj.GetComponent<Block>().MoveToTarget(arriveTime);
+                spawnedBlockObj.GetComponent<CubeBlock>().MoveToTarget(arriveTime);
             }
         }
         
@@ -38,9 +38,8 @@ public class FallManager : Singleton<FallManager>
         GameObject spawnedBlockObj = Instantiate(blockPrefab, spawnPosition, Quaternion.identity, spawnedBlocksParent);
         gridManager.allBlocks[x].columns[y] = spawnedBlockObj;
         CubeTypes currentCubeType = (CubeTypes)Random.Range(0, System.Enum.GetValues(typeof(CubeTypes)).Length);
-        Block currentBlock = spawnedBlockObj.AddComponent<CubeBlock>();
-        spawnedBlockObj.GetComponent<CubeBlock>().cubeType = currentCubeType;
-        
+        CubeBlock currentBlock = spawnedBlockObj.AddComponent<CubeBlock>();
+        currentBlock.cubeType = currentCubeType;
         currentBlock.gridIndex = new Vector2(x, y);
         currentBlock.target = targetTransform;
         currentBlock.SetupBlock();
