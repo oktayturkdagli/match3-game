@@ -16,8 +16,8 @@ public class GridManager : MonoBehaviour
     [HideInInspector] public int moves;
     [HideInInspector] public BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     [HideInInspector] public CubeTypes[,] cubeTypes = new CubeTypes[1, 1];
-    [HideInInspector] public GameObject2DArray[] allBlocks;
-    [HideInInspector] public GameObject2DArray[] allPositionObjects;
+    [HideInInspector] public GameObject[,] allBlocks;
+    [HideInInspector] public GameObject[,] allPositionObjects;
     
     public Dictionary<int, int> changingColumns = new Dictionary<int, int>(); // Key is column index, Value is changing block count
     
@@ -52,8 +52,8 @@ public class GridManager : MonoBehaviour
         {
             for (var j = 0; j < gameGrid.GridSizeY; j++)
             {
-                blockTypes[i, j] = currentLevelData.GameGrid.blockTypes[i].rows[j];
-                cubeTypes[i, j] = currentLevelData.GameGrid.cubeTypes[i].rows[j];
+                blockTypes[i, j] = currentLevelData.GameGrid.blockTypes[i, j];
+                cubeTypes[i, j] = currentLevelData.GameGrid.cubeTypes[i, j];
             }
         }
     }
@@ -115,20 +115,10 @@ public class GridManager : MonoBehaviour
             (((gameGrid.GridSizeY * blockSize) + ((gameGrid.GridSizeY - 1) * gapSize)) / 2f) - blockSize / 2f);
         
         // Spawn blocks
-        allBlocks = new GameObject2DArray[gameGrid.GridSizeX];
-        allPositionObjects = new GameObject2DArray[gameGrid.GridSizeX];
+        allBlocks = new GameObject[gameGrid.GridSizeX, gameGrid.GridSizeY];
+        allPositionObjects = new GameObject[gameGrid.GridSizeX, gameGrid.GridSizeY];
         for (var i = 0; i < gameGrid.GridSizeX; i++)
         {
-            allBlocks[i] = new GameObject2DArray
-            {
-                rows = new GameObject[gameGrid.GridSizeY]
-            };
-
-            allPositionObjects[i] = new GameObject2DArray
-            {
-                rows = new GameObject[gameGrid.GridSizeY]
-            };
-
             for (var j = 0; j < gameGrid.GridSizeY; j++)
             {
                 Vector3 spawnPosition = transform.position + new Vector3(startPosition.x + (i * blockSize) + (i * gapSize), 
@@ -141,8 +131,8 @@ public class GridManager : MonoBehaviour
                 
                 // Define block properties
                 DefineBlockProperties(spawnedBlockObj, i, j, spawnedPositionObj.transform);
-                allBlocks[i].rows[j] = spawnedBlockObj;
-                allPositionObjects[i].rows[j] = spawnedPositionObj;
+                allBlocks[i, j] = spawnedBlockObj;
+                allPositionObjects[i, j] = spawnedPositionObj;
             }
         }
     }
@@ -180,6 +170,6 @@ public class GridManager : MonoBehaviour
     
     private void ClearCell(int x, int y)
     {
-        allBlocks[x].rows[y] = null;
+        allBlocks[x,y] = null;
     }
 }

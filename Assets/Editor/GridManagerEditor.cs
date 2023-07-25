@@ -161,9 +161,14 @@ public class GridManagerEditor : Editor
         GUILayout.Space(15f);
         
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-        
+
         if (blockTypes.GetLength(0) != GridManager.gameGrid.GridSizeX)
+        {
+            gridSizeX = GridManager.gameGrid.GridSizeX;
+            gridSizeY = GridManager.gameGrid.GridSizeY;
+            GridManager.CreateGrid();
             FillBlocksArrays();
+        }
         
         for (var i = 0; i < gridSizeY; i++)
         {

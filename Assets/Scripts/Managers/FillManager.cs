@@ -15,22 +15,22 @@ public class FillManager : Singleton<FillManager>
             var itemKey = item.Key;
             var itemValue = item.Value;
             
-            int rowLength = gridManager.allBlocks[itemKey].rows.Length;
+            int rowLength = gridManager.allBlocks.GetLength(1);
             for (var j = rowLength - 1; j >= 0; j--)
             {
-                if (gridManager.allBlocks[itemKey].rows[j] == null || (gridManager.allBlocks[itemKey].rows[j] && gridManager.allBlocks[itemKey].rows[j].GetComponent<Block>().target == null))
+                if (gridManager.allBlocks[itemKey, j] == null || (gridManager.allBlocks[itemKey, j] && gridManager.allBlocks[itemKey, j].GetComponent<Block>().target == null))
                 {
                     for (var k = j; k >= 0; k--)
                     {
-                        if (gridManager.allBlocks[itemKey].rows[k] && gridManager.allBlocks[itemKey].rows[k].GetComponent<Block>().target != null)
+                        if (gridManager.allBlocks[itemKey, k] && gridManager.allBlocks[itemKey, k].GetComponent<Block>().target != null)
                         {
-                            GameObject newTargetObj = gridManager.allPositionObjects[itemKey].rows[j].gameObject;
-                            Block currentBlock = gridManager.allBlocks[itemKey].rows[k].gameObject.GetComponent<Block>();
+                            GameObject newTargetObj = gridManager.allPositionObjects[itemKey, j].gameObject;
+                            Block currentBlock = gridManager.allBlocks[itemKey, k].gameObject.GetComponent<Block>();
                             currentBlock.target = newTargetObj.transform;
                             currentBlock.gridIndex = new Vector2(itemKey, j);
                             
-                            gridManager.allBlocks[itemKey].rows[j] = gridManager.allBlocks[itemKey].rows[k];
-                            gridManager.allBlocks[itemKey].rows[k] = null;
+                            gridManager.allBlocks[itemKey, j] = gridManager.allBlocks[itemKey, k];
+                            gridManager.allBlocks[itemKey, k] = null;
                             currentBlock.UpdateSortingOrder();
                             currentBlock.MoveToTarget(0.5f);
                             break;

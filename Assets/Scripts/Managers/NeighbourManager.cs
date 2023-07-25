@@ -5,11 +5,6 @@ public class NeighbourManager : Singleton<NeighbourManager>
 {
     [SerializeField] private GridManager gridManager;
     List<GameObject> neighbours = new List<GameObject>();
-
-    public void DoSingleObjAction(Vector2 gridIndex)
-    {
-        gridManager.AddNewChangingColumn((int)gridIndex.x);
-    }
     
     public List<GameObject> FindSameTypeNeighbours(CubeTypes cubeType, Vector2 gridIndex)
     {
@@ -17,7 +12,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
 
         gridManager.changingColumns = new Dictionary<int, int>();
         gridManager.AddNewChangingColumn((int)gridIndex.x);
-        neighbours.Add(gridManager.allBlocks[(int)gridIndex.x].rows[(int)gridIndex.y]);
+        neighbours.Add(gridManager.allBlocks[(int)gridIndex.x, (int)gridIndex.y]);
         
         RecursiveNeighbourSearch(cubeType, gridIndex);
         
@@ -31,27 +26,27 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (x + 1 < gridManager.allBlocks.Length)
         {
-            Block curBlock = gridManager.allBlocks[x + 1].rows[y].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x + 1].rows[y].GetComponent<CubeBlock>().cubeType == cubeType)
+            Block curBlock = gridManager.allBlocks[x + 1, y].GetComponent<Block>();
+            if (curBlock is CubeBlock && gridManager.allBlocks[x + 1, y].GetComponent<CubeBlock>().cubeType == cubeType)
             {
-                if (!neighbours.Contains(gridManager.allBlocks[x + 1].rows[y]))
+                if (!neighbours.Contains(gridManager.allBlocks[x + 1, y]))
                 {
                     gridManager.AddNewChangingColumn(x + 1);
-                    neighbours.Add(gridManager.allBlocks[x + 1].rows[y]);
+                    neighbours.Add(gridManager.allBlocks[x + 1, y]);
                     RecursiveNeighbourSearch(cubeType, new Vector2(x + 1, y));
                 }
             }
         }
         
-        if (y + 1 < gridManager.allBlocks[0].rows.Length)
+        if (y + 1 < gridManager.allBlocks.GetLength(1))
         {
-            Block curBlock = gridManager.allBlocks[x].rows[y + 1].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x].rows[y + 1].GetComponent<CubeBlock>().cubeType == cubeType)
+            Block curBlock = gridManager.allBlocks[x, y + 1].GetComponent<Block>();
+            if (curBlock is CubeBlock && gridManager.allBlocks[x, y + 1].GetComponent<CubeBlock>().cubeType == cubeType)
             {
-                if (!neighbours.Contains(gridManager.allBlocks[x].rows[y + 1]))
+                if (!neighbours.Contains(gridManager.allBlocks[x, y + 1]))
                 {
                     gridManager.AddNewChangingColumn(x);
-                    neighbours.Add(gridManager.allBlocks[x].rows[y + 1]);
+                    neighbours.Add(gridManager.allBlocks[x, y + 1]);
                     RecursiveNeighbourSearch(cubeType, new Vector2(x, y + 1));
                 }
             }
@@ -59,13 +54,13 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (x - 1 >= 0)
         {
-            Block curBlock = gridManager.allBlocks[x - 1].rows[y].GetComponent<Block>();
-            if (curBlock is CubeBlock && gridManager.allBlocks[x - 1].rows[y].GetComponent<CubeBlock>().cubeType == cubeType)
+            Block curBlock = gridManager.allBlocks[x - 1, y].GetComponent<Block>();
+            if (curBlock is CubeBlock && gridManager.allBlocks[x - 1, y].GetComponent<CubeBlock>().cubeType == cubeType)
             {
-                if (!neighbours.Contains(gridManager.allBlocks[x - 1].rows[y]))
+                if (!neighbours.Contains(gridManager.allBlocks[x - 1, y]))
                 {
                     gridManager.AddNewChangingColumn(x - 1);
-                    neighbours.Add(gridManager.allBlocks[x - 1].rows[y]);
+                    neighbours.Add(gridManager.allBlocks[x - 1, y]);
                     RecursiveNeighbourSearch(cubeType, new Vector2(x - 1, y));
                 }
             }
@@ -73,14 +68,14 @@ public class NeighbourManager : Singleton<NeighbourManager>
         
         if (y - 1 >= 0)
         {
-            Block curBlock = gridManager.allBlocks[x].rows[y - 1].GetComponent<Block>();
+            Block curBlock = gridManager.allBlocks[x, y - 1].GetComponent<Block>();
             if (curBlock is CubeBlock &&
-                 gridManager.allBlocks[x].rows[y - 1].GetComponent<CubeBlock>().cubeType == cubeType)
+                 gridManager.allBlocks[x, y - 1].GetComponent<CubeBlock>().cubeType == cubeType)
             {
-                if (!neighbours.Contains(gridManager.allBlocks[x].rows[y - 1]))
+                if (!neighbours.Contains(gridManager.allBlocks[x, y - 1]))
                 {
                     gridManager.AddNewChangingColumn(x);
-                    neighbours.Add(gridManager.allBlocks[x].rows[y - 1]);
+                    neighbours.Add(gridManager.allBlocks[x, y - 1]);
                     RecursiveNeighbourSearch(cubeType, new Vector2(x, y - 1));
                 }
             }
@@ -93,7 +88,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
         for (var i = 0; i < (int)gridIndex.y; i++)
         {
             gridManager.AddNewChangingColumn((int)gridIndex.x);
-            upBlocks.Add(gridManager.allBlocks[(int)gridIndex.x].rows[i]);
+            upBlocks.Add(gridManager.allBlocks[(int)gridIndex.x, i]);
         }
         return upBlocks;
     }
@@ -104,7 +99,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
         for (int i = (int)gridIndex.y + 1; i < gridManager.gameGrid.GridSizeY; i++)
         {
             gridManager.AddNewChangingColumn((int)gridIndex.x);
-            downBlocks.Add(gridManager.allBlocks[(int)gridIndex.x].rows[i]);
+            downBlocks.Add(gridManager.allBlocks[(int)gridIndex.x, i]);
         }
         return downBlocks;
     }
@@ -115,7 +110,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
         for (int i = (int)gridIndex.x + 1; i < gridManager.gameGrid.GridSizeX; i++)
         {
             gridManager.AddNewChangingColumn(i);
-            rightBlocks.Add(gridManager.allBlocks[i].rows[(int)gridIndex.y]);
+            rightBlocks.Add(gridManager.allBlocks[i, (int)gridIndex.y]);
         }
         return rightBlocks;
     }
@@ -126,7 +121,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
         for (int i = 0; i < (int)gridIndex.x; i++)
         {
             gridManager.AddNewChangingColumn(i);
-            leftBlocks.Add(gridManager.allBlocks[i].rows[(int)gridIndex.y]);
+            leftBlocks.Add(gridManager.allBlocks[i, (int)gridIndex.y]);
         }
         return leftBlocks;
     }
