@@ -23,7 +23,6 @@ public class GridManagerEditor : Editor
     private int redCubeGoal = 0;
     private int yellowCubeGoal = 0;
     
-    private BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     private CubeTypes[,] cubeTypes = new CubeTypes[1, 1];
 
     private void OnEnable()
@@ -162,7 +161,7 @@ public class GridManagerEditor : Editor
         
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
         
-        if (blockTypes.GetLength(0) != GridManager.gameGrid.GridSizeX)
+        if (cubeTypes.GetLength(0) != GridManager.gameGrid.GridSizeX)
             FillBlocksArrays();
         
         for (var i = 0; i < gridSizeY; i++)
@@ -172,14 +171,9 @@ public class GridManagerEditor : Editor
             {
                 EditorGUILayout.BeginVertical();
                 GUILayout.Label("Cell " + j + "-" + i, GUILayout.Width(70));
-                blockTypes[j, i] = (BlockTypes)EditorGUILayout.EnumPopup(blockTypes[j, i], GUILayout.Width(70));
-                
-                if (blockTypes[j, i] == BlockTypes.Cube)
-                    cubeTypes[j, i] = (CubeTypes)EditorGUILayout.EnumPopup(cubeTypes[j, i], GUILayout.Width(40));
-                
+                cubeTypes[j, i] = (CubeTypes)EditorGUILayout.EnumPopup(cubeTypes[j, i], GUILayout.Width(40));
                 EditorGUILayout.EndVertical();
             }
-            
             EditorGUILayout.EndHorizontal();
         }
         
@@ -197,8 +191,7 @@ public class GridManagerEditor : Editor
             {
                 for (var j = 0; j < gridSizeX; j++)
                 {
-                    blockTypes[j, i] = BlockTypes.Cube;
-                    CubeTypes randomCube = (CubeTypes) UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(CubeTypes)).Length);
+                    CubeTypes randomCube = (CubeTypes)Random.Range(0, System.Enum.GetValues(typeof(CubeTypes)).Length);
                     cubeTypes[j, i] = randomCube;
                 }
             }
@@ -214,7 +207,6 @@ public class GridManagerEditor : Editor
     
     private void FillBlocksArrays()
     {
-        blockTypes = new BlockTypes[gridSizeX, gridSizeY];
         cubeTypes = new CubeTypes[gridSizeX, gridSizeY];
         
         GridManager.TransferLevelDataToGridManager();
@@ -222,7 +214,6 @@ public class GridManagerEditor : Editor
         {
             for (var j = 0; j < gridSizeX; j++)
             {
-                blockTypes[j, i] = GridManager.blockTypes[j, i];
                 cubeTypes[j, i] = GridManager.cubeTypes[j, i];
             }
         }
@@ -230,7 +221,7 @@ public class GridManagerEditor : Editor
     
     private void UpdateCurrentLevelData()
     {
-        GridManager.UpdateGridManagerWithExternalData(blockTypes, cubeTypes);
+        GridManager.UpdateGridManagerWithExternalData(cubeTypes);
         GridManager.SaveGridData();
         EditorUtility.SetDirty(GridManager.currentLevelData);
         EditorUtility.SetDirty(GridManager);

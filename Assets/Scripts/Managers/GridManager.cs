@@ -14,18 +14,11 @@ public class GridManager : MonoBehaviour
     [HideInInspector] public GameGrid gameGrid;
     [HideInInspector] public Goals goals;
     [HideInInspector] public int moves;
-    [HideInInspector] public BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     [HideInInspector] public CubeTypes[,] cubeTypes = new CubeTypes[1, 1];
     [HideInInspector] public GameObject2DArray[] allBlocks;
     [HideInInspector] public GameObject2DArray[] allPositionObjects;
     
     public Dictionary<int, int> changingColumns = new Dictionary<int, int>(); // Key is column index, Value is changing block count
-    
-    public Transform SpawnedBlocksParent
-    {
-        get => spawnedBlocksParent;
-        set => spawnedBlocksParent = value;
-    }
     
     private void OnEnable()
     {
@@ -45,30 +38,26 @@ public class GridManager : MonoBehaviour
     public void TransferLevelDataToGridManager()
     {
         // Level Data is transferred to GridManager
-        blockTypes = new BlockTypes[gameGrid.GridSizeX, gameGrid.GridSizeY];
         cubeTypes = new CubeTypes[gameGrid.GridSizeX, gameGrid.GridSizeY];
         
         for (var i = 0; i < gameGrid.GridSizeX; i++)
         {
             for (var j = 0; j < gameGrid.GridSizeY; j++)
             {
-                blockTypes[i, j] = currentLevelData.GameGrid.blockTypes[i].rows[j];
-                cubeTypes[i, j] = currentLevelData.GameGrid.cubeTypes[i].rows[j];
+                cubeTypes[i, j] = currentLevelData.GameGrid.cubeTypes[i].columns[j];
             }
         }
     }
     
-    public void UpdateGridManagerWithExternalData(BlockTypes[,] newBlocks, CubeTypes[,] newCubes)
+    public void UpdateGridManagerWithExternalData(CubeTypes[,] newCubes)
     {
         // GridManager is updated with external data
-        blockTypes = new BlockTypes[newBlocks.GetLength(0), newBlocks.GetLength(1)];
         cubeTypes = new CubeTypes[newCubes.GetLength(0), newCubes.GetLength(1)];
         
         for (var i = 0; i < cubeTypes.GetLength(0); i++)
         {
             for (var j = 0; j < cubeTypes.GetLength(1); j++)
             {
-                blockTypes[i, j] = newBlocks[i, j];
                 cubeTypes[i, j] = newCubes[i, j];
             }
         }
@@ -85,7 +74,7 @@ public class GridManager : MonoBehaviour
     
     public void SaveGridData()
     {
-        gameGrid.UpdateGridWithExternalData(blockTypes, cubeTypes);
+        gameGrid.UpdateGridWithExternalData(cubeTypes);
         currentLevelData.moves = moves;
         SpawnStartingBlocks();
         SetGridCornerSize();
@@ -121,12 +110,12 @@ public class GridManager : MonoBehaviour
         {
             allBlocks[i] = new GameObject2DArray
             {
-                rows = new GameObject[gameGrid.GridSizeY]
+                columns = new GameObject[gameGrid.GridSizeY]
             };
 
             allPositionObjects[i] = new GameObject2DArray
             {
-                rows = new GameObject[gameGrid.GridSizeY]
+                columns = new GameObject[gameGrid.GridSizeY]
             };
 
             for (var j = 0; j < gameGrid.GridSizeY; j++)
@@ -141,20 +130,16 @@ public class GridManager : MonoBehaviour
                 
                 // Define block properties
                 DefineBlockProperties(spawnedBlockObj, i, j, spawnedPositionObj.transform);
-                allBlocks[i].rows[j] = spawnedBlockObj;
-                allPositionObjects[i].rows[j] = spawnedPositionObj;
+                allBlocks[i].columns[j] = spawnedBlockObj;
+                allPositionObjects[i].columns[j] = spawnedPositionObj;
             }
         }
     }
     
     public void DefineBlockProperties(GameObject blockObj, int xIndex, int yIndex, Transform spawnedPositionTransform)
     {
-        var blockBase = BlockFactory.GetBlockWithBlockType(blockTypes[xIndex, yIndex]);
-        Block currentBlock = blockObj.AddComponent(blockBase.GetType()) as Block;
-        
-        if (blockBase is CubeBlock)
-            blockObj.GetComponent<CubeBlock>().cubeType = cubeTypes[xIndex, yIndex];
-        
+        Block currentBlock = blockObj.AddComponent<CubeBlock>();
+        blockObj.GetComponent<CubeBlock>().cubeType = cubeTypes[xIndex, yIndex];
         currentBlock.gridIndex = new Vector2(xIndex, yIndex);
         currentBlock.target = spawnedPositionTransform;
         currentBlock.SetupBlock();
@@ -180,6 +165,6 @@ public class GridManager : MonoBehaviour
     
     private void ClearCell(int x, int y)
     {
-        allBlocks[x].rows[y] = null;
+        allBlocks[x].columns[y] = null;
     }
 }

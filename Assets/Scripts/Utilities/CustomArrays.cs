@@ -1,20 +1,21 @@
 ﻿using System;
 using UnityEngine;
 
+// This script is used to display custom 2D arrays in Unity Inspector
 [Serializable]
 public class BlockTypes2DArray
 {
-    public BlockTypes[] rows = new BlockTypes[1];
+    public BlockTypes[] columns = new BlockTypes[1];
 }
 
 [Serializable]
 public class CubeTypes2DArray
 {
-    public CubeTypes[] rows = new CubeTypes[1];
+    public CubeTypes[] columns = new CubeTypes[1];
 }
 
 [Serializable]
 public class GameObject2DArray
 {
-    public GameObject[] rows = new GameObject[1];
+    public GameObject[] columns = new GameObject[1];
 }

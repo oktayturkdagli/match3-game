@@ -108,8 +108,10 @@ public class CubeBlock : Block
     private Sprite GetMySprite()
     {
         if (!GameManager.Instance)
-            Debug.Log("GameManager.Instance is null");
-        
+        {
+            var instance = GameManager.Instance;
+        }
+
         else if (!GameManager.Instance.sharedData)
             Debug.Log("sharedData is null");
         
