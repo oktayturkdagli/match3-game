@@ -4,7 +4,7 @@
 public class Level : ScriptableObject
 {
     public Goals goals;
-    public GameGrid GameGrid;
+    public GameGrid gameGrid;
     public int numberOfColors;
     public int groupA;
     public int groupB;

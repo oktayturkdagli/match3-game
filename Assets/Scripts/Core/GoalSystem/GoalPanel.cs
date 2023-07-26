@@ -12,22 +12,22 @@ public class GoalPanel : Singleton<GoalPanel>
     
     private Goals currentGoals;
     
-    public static event Action allGoalsEndedEvent;
-    public static event Action goalsFailedEvent;
+    public static event Action OnAllGoalsEnded;
+    public static event Action OnGoalsFailed;
     
     private void OnEnable()
     {
-        LevelManager.levelLoadedEvent += SetupGoalObjects;
-        MovesPanel.movesFinishedEvent += CheckDidGoalsFail;
+        LevelManager.OnLevelLoaded += Initialize;
+        MovesPanel.OnMovesFinished += CheckDidGoalsFail;
     }
     
     private void OnDisable()
     {
-        LevelManager.levelLoadedEvent -= SetupGoalObjects;
-        MovesPanel.movesFinishedEvent -= CheckDidGoalsFail;
+        LevelManager.OnLevelLoaded -= Initialize;
+        MovesPanel.OnMovesFinished -= CheckDidGoalsFail;
     }
     
-    private void SetupGoalObjects()
+    private void Initialize()
     {
         currentGoals = LevelManager.Instance.CurrentLevelData.goals;
         
@@ -52,15 +52,15 @@ public class GoalPanel : Singleton<GoalPanel>
             yellowCubeGoal.gameObject.SetActive(true);
     }
     
-    public void DecreaseGoalFromCubeType(CubeTypes cubeType)
+    public void DecreaseGoal(BlockTypes blockType)
     {
-        GoalObject goalObject = FindGoalFromCubeType(cubeType);
+        GoalObject goalObject = GetGoalObject(blockType);
         
         if (goalObject)
             goalObject.Count -= 1;
         
         if (CheckDidGoalsAchieve())
-            allGoalsEndedEvent?.Invoke();
+            OnAllGoalsEnded?.Invoke();
     }
     
     private bool CheckDidGoalsAchieve()
@@ -86,70 +86,70 @@ public class GoalPanel : Singleton<GoalPanel>
     private void CheckDidGoalsFail()
     {
         if (!CheckDidGoalsAchieve())
-            goalsFailedEvent?.Invoke();
+            OnGoalsFailed?.Invoke();
     }
     
-    private GoalObject FindGoalFromCubeType(CubeTypes cubeType)
+    public bool CheckIsThereGoal(BlockTypes blockType)
     {
-        switch (cubeType)
+        switch (blockType)
         {
-            case CubeTypes.Blue:
+            case BlockTypes.Blue:
+                return blueCubeGoal.Count > 0;
+            case BlockTypes.Green:
+                return greenCubeGoal.Count > 0;
+            case BlockTypes.Pink:
+                return pinkCubeGoal.Count > 0;
+            case BlockTypes.Purple:
+                return purpleCubeGoal.Count > 0;
+            case BlockTypes.Red:
+                return redCubeGoal.Count > 0;
+            case BlockTypes.Yellow:
+                return yellowCubeGoal.Count > 0;
+            
+            default:
+                return false;
+        }
+    }
+    
+    private GoalObject GetGoalObject(BlockTypes blockType)
+    {
+        switch (blockType)
+        {
+            case BlockTypes.Blue:
                 return blueCubeGoal;
-            case CubeTypes.Green:
+            case BlockTypes.Green:
                 return greenCubeGoal;
-            case CubeTypes.Pink:
+            case BlockTypes.Pink:
                 return pinkCubeGoal;
-            case CubeTypes.Purple:
+            case BlockTypes.Purple:
                 return purpleCubeGoal;
-            case CubeTypes.Red:
+            case BlockTypes.Red:
                 return redCubeGoal;
-            case CubeTypes.Yellow:
+            case BlockTypes.Yellow:
                 return yellowCubeGoal;
             default: 
                 return blueCubeGoal;
         }
     }
     
-    public Vector3 GetGoalPositionFromCubeType(CubeTypes cubeType)
+    public Vector3 GetGoalPosition(BlockTypes blockType)
     {
-        switch (cubeType)
+        switch (blockType)
         {
-            case CubeTypes.Blue:
+            case BlockTypes.Blue:
                 return blueCubeGoal.gameObject.transform.position;
-            case CubeTypes.Green:
+            case BlockTypes.Green:
                 return greenCubeGoal.gameObject.transform.position;
-            case CubeTypes.Pink:
+            case BlockTypes.Pink:
                 return pinkCubeGoal.gameObject.transform.position;
-            case CubeTypes.Purple:
+            case BlockTypes.Purple:
                 return purpleCubeGoal.gameObject.transform.position;
-            case CubeTypes.Red:
+            case BlockTypes.Red:
                 return redCubeGoal.gameObject.transform.position;
-            case CubeTypes.Yellow:
+            case BlockTypes.Yellow:
                 return yellowCubeGoal.gameObject.transform.position;
             default: 
                 return redCubeGoal.gameObject.transform.position;
-        }
-    }
-    
-    public bool CheckIsThereGoalFromCubeType(CubeTypes cubeType)
-    {
-        switch (cubeType)
-        {
-            case CubeTypes.Blue:
-                return blueCubeGoal.Count > 0;
-            case CubeTypes.Green:
-                return greenCubeGoal.Count > 0;
-            case CubeTypes.Pink:
-                return pinkCubeGoal.Count > 0;
-            case CubeTypes.Purple:
-                return purpleCubeGoal.Count > 0;
-            case CubeTypes.Red:
-                return redCubeGoal.Count > 0;
-            case CubeTypes.Yellow:
-                return yellowCubeGoal.Count > 0;
-            
-            default:
-                return false;
         }
     }
 }

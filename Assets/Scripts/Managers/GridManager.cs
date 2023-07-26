@@ -4,96 +4,95 @@ using UnityEngine;
 [System.Serializable]
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] public Level currentLevelData;
+    [SerializeField] public Level currentLevel;
     [SerializeField] private Transform spawnedBlocksParent;
-    [SerializeField] private Transform spawnedPositionObjectsParent;
-    [SerializeField] private Transform gridCornerTransform;
-    [SerializeField] private GameObject posObjPrefab;
-    [SerializeField] private GameObject blockObjPrefab;
+    [SerializeField] private Transform spawnedBlockPlacementPositionObjectsParent;
+    [SerializeField] private Transform gridCornersParent;
+    [SerializeField] private GameObject placementPositionObject;
+    [SerializeField] private GameObject blockObject;
+    [HideInInspector] public GameObject2DArray[] allBlockObjects;
+    [HideInInspector] public GameObject2DArray[] allPlacementPositionObjects;
     
     [HideInInspector] public GameGrid gameGrid;
     [HideInInspector] public Goals goals;
     [HideInInspector] public int moves;
-    [HideInInspector] public CubeTypes[,] cubeTypes = new CubeTypes[1, 1];
-    [HideInInspector] public GameObject2DArray[] allBlocks;
-    [HideInInspector] public GameObject2DArray[] allPositionObjects;
+    [HideInInspector] public BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     
     public Dictionary<int, int> changingColumns = new Dictionary<int, int>(); // Key is column index, Value is changing block count
     
     private void OnEnable()
     {
-        CubeBlock.cubeLeavedGridEvent += ClearCell;
+        Block.OnCubeLeavedGrid += ClearCell;
     }
     
     private void OnDisable()
     {
-        CubeBlock.cubeLeavedGridEvent -= ClearCell;
+        Block.OnCubeLeavedGrid -= ClearCell;
     }
     
-    public void CreateGrid()
+    public void InitializeGrid()
     {
-        gameGrid.CreateGrid();
+        gameGrid.Initialize();
     }
     
-    public void TransferLevelDataToGridManager()
+    public void LoadLevelDataToGridManager()
+    {
+        gameGrid = currentLevel.gameGrid;
+        goals = currentLevel.goals;
+        moves = currentLevel.moves;
+        
+        GetCurrentLevelGridToGridManager();
+    }
+    
+    public void GetCurrentLevelGridToGridManager()
     {
         // Level Data is transferred to GridManager
-        cubeTypes = new CubeTypes[gameGrid.GridSizeX, gameGrid.GridSizeY];
+        blockTypes = new BlockTypes[gameGrid.GridSizeX, gameGrid.GridSizeY];
         
         for (var i = 0; i < gameGrid.GridSizeX; i++)
         {
             for (var j = 0; j < gameGrid.GridSizeY; j++)
             {
-                cubeTypes[i, j] = currentLevelData.GameGrid.cubeTypes[i].columns[j];
+                blockTypes[i, j] = currentLevel.gameGrid.blockTypes[i].columns[j];
             }
         }
     }
     
-    public void UpdateGridManagerWithExternalData(CubeTypes[,] newCubes)
+    public void GetExternalGridToGridManager(BlockTypes[,] newCubes)
     {
         // GridManager is updated with external data
-        cubeTypes = new CubeTypes[newCubes.GetLength(0), newCubes.GetLength(1)];
+        blockTypes = new BlockTypes[newCubes.GetLength(0), newCubes.GetLength(1)];
         
-        for (var i = 0; i < cubeTypes.GetLength(0); i++)
+        for (var i = 0; i < blockTypes.GetLength(0); i++)
         {
-            for (var j = 0; j < cubeTypes.GetLength(1); j++)
+            for (var j = 0; j < blockTypes.GetLength(1); j++)
             {
-                cubeTypes[i, j] = newCubes[i, j];
+                blockTypes[i, j] = newCubes[i, j];
             }
         }
-    }
-    
-    public void LoadLevelDataToGridManager()
-    {
-        gameGrid = currentLevelData.GameGrid;
-        goals = currentLevelData.goals;
-        moves = currentLevelData.moves;
-        
-        TransferLevelDataToGridManager();
     }
     
     public void SaveGridData()
     {
-        gameGrid.UpdateGridWithExternalData(cubeTypes);
-        currentLevelData.moves = moves;
-        SpawnStartingBlocks();
+        gameGrid.GetExternalGridToGrid(blockTypes);
+        currentLevel.moves = moves;
+        SpawnInitialBlocks();
         SetGridCornerSize();
     }
     
     public void SetGridCornerSize()
     {
-        float blockSize = 0.755f;
-        float gapSize = 0.1f;
-        gridCornerTransform.localScale = new Vector3((blockSize * gameGrid.GridSizeX) + (gapSize * (gameGrid.GridSizeX)),
+        const float blockSize = 0.755f;
+        const float gapSize = 0.1f;
+        gridCornersParent.localScale = new Vector3((blockSize * gameGrid.GridSizeX) + (gapSize * (gameGrid.GridSizeX)),
             (blockSize * gameGrid.GridSizeY) + (gapSize * (gameGrid.GridSizeY)) + 0.2f, 1);
     }
     
-    public void SpawnStartingBlocks()
+    public void SpawnInitialBlocks()
     {
-        // Clear placeholder objects
-        for (var i = spawnedPositionObjectsParent.childCount - 1; i >= 0; i--)
-            DestroyImmediate(spawnedPositionObjectsParent.GetChild(i).gameObject);
-        
+        // Clear previous objects
+        for (var i = spawnedBlockPlacementPositionObjectsParent.childCount - 1; i >= 0; i--)
+            DestroyImmediate(spawnedBlockPlacementPositionObjectsParent.GetChild(i).gameObject);
         for (var i = spawnedBlocksParent.childCount - 1; i >= 0; i--)
             DestroyImmediate(spawnedBlocksParent.GetChild(0).gameObject);
         
@@ -104,16 +103,16 @@ public class GridManager : MonoBehaviour
             (((gameGrid.GridSizeY * blockSize) + ((gameGrid.GridSizeY - 1) * gapSize)) / 2f) - blockSize / 2f);
         
         // Spawn blocks
-        allBlocks = new GameObject2DArray[gameGrid.GridSizeX];
-        allPositionObjects = new GameObject2DArray[gameGrid.GridSizeX];
+        allBlockObjects = new GameObject2DArray[gameGrid.GridSizeX];
+        allPlacementPositionObjects = new GameObject2DArray[gameGrid.GridSizeX];
         for (var i = 0; i < gameGrid.GridSizeX; i++)
         {
-            allBlocks[i] = new GameObject2DArray
+            allBlockObjects[i] = new GameObject2DArray
             {
                 columns = new GameObject[gameGrid.GridSizeY]
             };
 
-            allPositionObjects[i] = new GameObject2DArray
+            allPlacementPositionObjects[i] = new GameObject2DArray
             {
                 columns = new GameObject[gameGrid.GridSizeY]
             };
@@ -124,25 +123,19 @@ public class GridManager : MonoBehaviour
                     startPosition.y - ((j * blockSize) + (j * gapSize)), 0);
                 
                 // Instantiate block and position objects
-                GameObject spawnedPositionObj = Instantiate(posObjPrefab, spawnPosition, Quaternion.identity, spawnedPositionObjectsParent);
-                GameObject spawnedBlockObj = Instantiate(blockObjPrefab, spawnPosition, Quaternion.identity,
-                    spawnedBlocksParent);
+                GameObject spawnedBlockPlacementPositionObject = Instantiate(placementPositionObject, spawnPosition, Quaternion.identity, spawnedBlockPlacementPositionObjectsParent);
+                GameObject spawnedBlockObject = Instantiate(blockObject, spawnPosition, Quaternion.identity, spawnedBlocksParent);
                 
                 // Define block properties
-                DefineBlockProperties(spawnedBlockObj, i, j, spawnedPositionObj.transform);
-                allBlocks[i].columns[j] = spawnedBlockObj;
-                allPositionObjects[i].columns[j] = spawnedPositionObj;
+                Block spawnedBlock = spawnedBlockObject.AddComponent<Block>();
+                spawnedBlock.blockType = blockTypes[i, j];
+                spawnedBlock.gridIndex = new Vector2(i, j);
+                spawnedBlock.placementPosition = spawnedBlockPlacementPositionObject.transform;
+                spawnedBlock.Initialize();
+                allBlockObjects[i].columns[j] = spawnedBlockObject;
+                allPlacementPositionObjects[i].columns[j] = spawnedBlockPlacementPositionObject;
             }
         }
-    }
-    
-    public void DefineBlockProperties(GameObject blockObj, int xIndex, int yIndex, Transform spawnedPositionTransform)
-    {
-        CubeBlock currentBlock = blockObj.AddComponent<CubeBlock>();
-        currentBlock.cubeType = cubeTypes[xIndex, yIndex];
-        currentBlock.gridIndex = new Vector2(xIndex, yIndex);
-        currentBlock.target = spawnedPositionTransform;
-        currentBlock.SetupBlock();
     }
     
     public void AddNewChangingColumn(int columnIndex)
@@ -165,6 +158,6 @@ public class GridManager : MonoBehaviour
     
     private void ClearCell(int x, int y)
     {
-        allBlocks[x].columns[y] = null;
+        allBlockObjects[x].columns[y] = null;
     }
 }

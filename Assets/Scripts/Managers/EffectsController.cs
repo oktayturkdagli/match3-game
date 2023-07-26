@@ -2,7 +2,7 @@
 
 public class EffectsController : Singleton<EffectsController>
 {
-    [SerializeField] private GameObject cubeCrackEffectPrefab;
+    [SerializeField] private GameObject cubeFragmentationEffectPrefab;
     
     [SerializeField] private Color blueColor;
     [SerializeField] private Color greenColor;
@@ -11,32 +11,33 @@ public class EffectsController : Singleton<EffectsController>
     [SerializeField] private Color redColor;
     [SerializeField] private Color yellowColor;
     
-    public void SpawnCubeCrackEffect(Vector3 spawnPos, CubeTypes cubeType)
+    public void PlayCubeFragmentationEffect(Vector3 spawnPosition, BlockTypes blockType)
     {
-        GameObject spawnedEffect = Instantiate(cubeCrackEffectPrefab, spawnPos, Quaternion.identity);
-        var mainModule = spawnedEffect.GetComponent<ParticleSystem>().main;
-        mainModule.startColor = DetectCubeColor(cubeType);
-        var subModule = spawnedEffect.transform.GetChild(0).GetComponent<ParticleSystem>().main;
-        subModule.startColor = DetectCubeColor(cubeType);
-        spawnedEffect.GetComponent<ParticleSystem>().Play();
-        Destroy(spawnedEffect, 3f);
+        GameObject instantiatedEffect = Instantiate(cubeFragmentationEffectPrefab, spawnPosition, Quaternion.identity);
+        var mainModule = instantiatedEffect.GetComponent<ParticleSystem>().main;
+        var subModule = instantiatedEffect.transform.GetChild(0).GetComponent<ParticleSystem>().main;
+        var blockColor = DetectCubeColor(blockType);
+        mainModule.startColor = blockColor;
+        subModule.startColor = blockColor;
+        instantiatedEffect.GetComponent<ParticleSystem>().Play();
+        Destroy(instantiatedEffect, 3f);
     }
     
-    private Color DetectCubeColor(CubeTypes cubeType)
+    private Color DetectCubeColor(BlockTypes blockType)
     {
-        switch (cubeType)
+        switch (blockType)
         {
-            case CubeTypes.Blue:
+            case BlockTypes.Blue:
                 return blueColor;
-            case CubeTypes.Green:
+            case BlockTypes.Green:
                 return greenColor;
-            case CubeTypes.Pink:
+            case BlockTypes.Pink:
                 return pinkColor;
-            case CubeTypes.Purple:
+            case BlockTypes.Purple:
                 return purpleColor;
-            case CubeTypes.Red:
+            case BlockTypes.Red:
                 return redColor;
-            case CubeTypes.Yellow:
+            case BlockTypes.Yellow:
                 return yellowColor;
             
             default: 

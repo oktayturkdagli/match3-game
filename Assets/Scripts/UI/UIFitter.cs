@@ -7,8 +7,8 @@ public class UIFitter : MonoBehaviour
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private RectTransform rectTransform;
     
-    private float oldScreeenRatio;
-    private float newScreeenRatio;
+    private float oldScreenRatio;
+    private float newScreenRatio;
     private float changePercent;
     private float imageResRatio;
     
@@ -18,10 +18,10 @@ public class UIFitter : MonoBehaviour
             return;
 
         imageResRatio = rectTransform.sizeDelta.x / rectTransform.sizeDelta.y;
-        oldScreeenRatio = canvasScaler.referenceResolution.x / canvasScaler.referenceResolution.y;
-        newScreeenRatio = (float)Screen.width / (float)Screen.height;
+        oldScreenRatio = canvasScaler.referenceResolution.x / canvasScaler.referenceResolution.y;
+        newScreenRatio = (float)Screen.width / (float)Screen.height;
         
-        if (oldScreeenRatio > newScreeenRatio)
+        if (oldScreenRatio > newScreenRatio)
             return;
         
         changePercent = CalculateChangeRatio();
@@ -34,7 +34,7 @@ public class UIFitter : MonoBehaviour
     
     private float CalculateChangeRatio()
     {
-        return ((newScreeenRatio - oldScreeenRatio) * 100f) / oldScreeenRatio;
+        return ((newScreenRatio - oldScreenRatio) * 100f) / oldScreenRatio;
     }
     
     private float CalculateWidth()

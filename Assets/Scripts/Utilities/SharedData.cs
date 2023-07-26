@@ -33,4 +33,25 @@ public class SharedData : ScriptableObject
     public Sprite yellowASprite;
     public Sprite yellowBSprite;
     public Sprite yellowCSprite;
+    
+    public Sprite GetCubeSprite(BlockTypes blockType)
+    {
+        switch (blockType)
+        {
+            case BlockTypes.Blue:
+                return blueDefaultSprite;
+            case BlockTypes.Green:
+                return greenDefaultSprite;
+            case BlockTypes.Pink:
+                return pinkDefaultSprite;
+            case BlockTypes.Purple:
+                return purpleDefaultSprite;
+            case BlockTypes.Red:
+                return redDefaultSprite;
+            case BlockTypes.Yellow:
+                return yellowDefaultSprite;
+        }
+        
+        return blueDefaultSprite;
+    }
 }

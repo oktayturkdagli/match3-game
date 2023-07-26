@@ -16,17 +16,17 @@ public class FallManager : Singleton<FallManager>
             var itemKey = item.Key;
             var itemValue = item.Value;
             
-            Vector3 startPosition = gridManager.allPositionObjects[itemKey].columns[0].transform.position + new Vector3(0, 2, 0);
+            Vector3 startPosition = gridManager.allPlacementPositionObjects[itemKey].columns[0].transform.position + new Vector3(0, 2, 0);
             for (var j = 0; j < itemValue; j++)
             {
                 Vector3 spawnPosition = startPosition + new Vector3(0, j * 1f, 0);
                 int yIndex = (itemValue - 1) - j;
                 
-                Transform targetTransform = gridManager.allPositionObjects[itemKey].columns[yIndex].transform;
+                Transform targetTransform = gridManager.allPlacementPositionObjects[itemKey].columns[yIndex].transform;
                 GameObject spawnedBlockObj = AddRandomBlockToGrid(itemKey, yIndex, spawnPosition, targetTransform);
                 
                 float arriveTime = Mathf.Clamp(Vector3.Distance(targetTransform.position, spawnPosition)*0.2f,0.5f,0.8f);
-                spawnedBlockObj.GetComponent<CubeBlock>().MoveToTarget(arriveTime);
+                spawnedBlockObj.GetComponent<Block>().MoveToTarget(arriveTime);
             }
         }
         
@@ -36,13 +36,13 @@ public class FallManager : Singleton<FallManager>
     private GameObject AddRandomBlockToGrid(int x, int y, Vector3 spawnPosition, Transform targetTransform)
     {
         GameObject spawnedBlockObj = Instantiate(blockPrefab, spawnPosition, Quaternion.identity, spawnedBlocksParent);
-        gridManager.allBlocks[x].columns[y] = spawnedBlockObj;
-        CubeTypes currentCubeType = (CubeTypes)Random.Range(0, System.Enum.GetValues(typeof(CubeTypes)).Length);
-        CubeBlock currentBlock = spawnedBlockObj.AddComponent<CubeBlock>();
-        currentBlock.cubeType = currentCubeType;
+        gridManager.allBlockObjects[x].columns[y] = spawnedBlockObj;
+        BlockTypes currentBlockType = (BlockTypes)Random.Range(0, System.Enum.GetValues(typeof(BlockTypes)).Length);
+        Block currentBlock = spawnedBlockObj.AddComponent<Block>();
+        currentBlock.blockType = currentBlockType;
         currentBlock.gridIndex = new Vector2(x, y);
-        currentBlock.target = targetTransform;
-        currentBlock.SetupBlock();
+        currentBlock.placementPosition = targetTransform;
+        currentBlock.Initialize();
         
         return spawnedBlockObj;
     }

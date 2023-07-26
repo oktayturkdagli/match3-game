@@ -5,7 +5,6 @@ using UnityEngine;
 public class FillManager : Singleton<FillManager>
 {
     [SerializeField] private GridManager gridManager;
-    [SerializeField] private GameObject blockPrefab;
     
     public void Fill()
     {
@@ -15,21 +14,21 @@ public class FillManager : Singleton<FillManager>
             var itemKey = item.Key;
             var itemValue = item.Value;
             
-            int rowLength = gridManager.allBlocks[itemKey].columns.Length;
+            int rowLength = gridManager.allBlockObjects[itemKey].columns.Length;
             for (var j = rowLength - 1; j >= 0; j--)
             {
-                if (gridManager.allBlocks[itemKey].columns[j] == null || (gridManager.allBlocks[itemKey].columns[j] && gridManager.allBlocks[itemKey].columns[j].GetComponent<CubeBlock>().target == null))
+                if (gridManager.allBlockObjects[itemKey].columns[j] == null || (gridManager.allBlockObjects[itemKey].columns[j] && gridManager.allBlockObjects[itemKey].columns[j].GetComponent<Block>().placementPosition == null))
                 {
                     for (var k = j; k >= 0; k--)
                     {
-                        if (gridManager.allBlocks[itemKey].columns[k] && gridManager.allBlocks[itemKey].columns[k].GetComponent<CubeBlock>().target != null)
+                        if (gridManager.allBlockObjects[itemKey].columns[k] && gridManager.allBlockObjects[itemKey].columns[k].GetComponent<Block>().placementPosition != null)
                         {
-                            GameObject newTargetObj = gridManager.allPositionObjects[itemKey].columns[j].gameObject;
-                            CubeBlock currentBlock = gridManager.allBlocks[itemKey].columns[k].gameObject.GetComponent<CubeBlock>();
-                            currentBlock.target = newTargetObj.transform;
+                            GameObject newTargetObj = gridManager.allPlacementPositionObjects[itemKey].columns[j].gameObject;
+                            Block currentBlock = gridManager.allBlockObjects[itemKey].columns[k].gameObject.GetComponent<Block>();
+                            currentBlock.placementPosition = newTargetObj.transform;
                             currentBlock.gridIndex = new Vector2(itemKey, j);
-                            gridManager.allBlocks[itemKey].columns[j] = gridManager.allBlocks[itemKey].columns[k];
-                            gridManager.allBlocks[itemKey].columns[k] = null;
+                            gridManager.allBlockObjects[itemKey].columns[j] = gridManager.allBlockObjects[itemKey].columns[k];
+                            gridManager.allBlockObjects[itemKey].columns[k] = null;
                             currentBlock.UpdateSortingOrder();
                             currentBlock.MoveToTarget(0.5f);
                             break;

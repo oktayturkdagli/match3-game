@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6979748752352423787}
   m_Layer: 0
-  m_Name: PosObj
+  m_Name: PlacementPositionObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

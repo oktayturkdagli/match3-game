@@ -5,7 +5,7 @@ public class GoalObject : MonoBehaviour
 {
     [SerializeField] private TMP_Text countText; 
     [SerializeField] private GameObject markerObject;
-    [SerializeField] private ParticleSystem myEffect;
+    [SerializeField] private ParticleSystem goalEffect;
     [SerializeField] private int count;
     
     public int Count
@@ -16,7 +16,8 @@ public class GoalObject : MonoBehaviour
         {
             if (value < count)
             {
-                PlayEffect();
+                goalEffect.Stop();
+                goalEffect.Play();
             }
             
             count = value;
@@ -26,18 +27,11 @@ public class GoalObject : MonoBehaviour
                 count = 0;
                 countText.gameObject.SetActive(false);
                 markerObject.gameObject.SetActive(true);
-
             }
             else
             {
                 countText.text = count.ToString();
             }
         }
-    }
-    
-    private void PlayEffect()
-    {
-        myEffect.Stop();
-        myEffect.Play();
     }
 }

@@ -8,6 +8,8 @@ public class MovesPanel : Singleton<MovesPanel>
     [SerializeField] private TMP_Text movesText;
     private int moves;
     
+    public static event Action OnMovesFinished;
+    
     public int Moves
     {
         get => moves;
@@ -24,16 +26,14 @@ public class MovesPanel : Singleton<MovesPanel>
         }
     }
     
-    public static event Action movesFinishedEvent;
-    
     private void OnEnable()
     {
-        LevelManager.levelLoadedEvent += GetMovesData;
+        LevelManager.OnLevelLoaded += GetMovesData;
     }
     
     private void OnDisable()
     {
-        LevelManager.levelLoadedEvent -= GetMovesData;
+        LevelManager.OnLevelLoaded -= GetMovesData;
     }
 
     private void GetMovesData()
@@ -44,6 +44,6 @@ public class MovesPanel : Singleton<MovesPanel>
     private IEnumerator MovesFinishedDelay()
     {
         yield return new WaitForSeconds(1f);
-        movesFinishedEvent?.Invoke();
+        OnMovesFinished?.Invoke();
     }
 }

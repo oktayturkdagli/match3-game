@@ -3,15 +3,9 @@ using UnityEngine;
 
 // This script is used to display custom 2D arrays in Unity Inspector
 [Serializable]
-public class BlockTypes2DArray
+public class Blocks2DArray
 {
     public BlockTypes[] columns = new BlockTypes[1];
-}
-
-[Serializable]
-public class CubeTypes2DArray
-{
-    public CubeTypes[] columns = new CubeTypes[1];
 }
 
 [Serializable]

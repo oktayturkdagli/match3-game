@@ -5,7 +5,7 @@ using System;
 public class GameGrid
 {
     [SerializeField] private Vector2 gridSize;
-    public CubeTypes2DArray[] cubeTypes;
+    public Blocks2DArray[] blockTypes;
 
     public int GridSizeX
     {
@@ -19,28 +19,28 @@ public class GameGrid
         set => gridSize.y = value;
     }
     
-    public void CreateGrid()
+    public void Initialize()
     {
         // Define the columns of the 2D array
-        cubeTypes = new CubeTypes2DArray[(int)gridSize.x];
+        blockTypes = new Blocks2DArray[(int)gridSize.x];
 
         // Define the rows of the 2D array
-        for (var i = 0; i < cubeTypes.Length; i++)
+        for (var i = 0; i < blockTypes.Length; i++)
         {
-            cubeTypes[i] = new CubeTypes2DArray
+            blockTypes[i] = new Blocks2DArray
             {
-                columns = new CubeTypes[(int)gridSize.y]
+                columns = new BlockTypes[(int)gridSize.y]
             };
         } 
     }
     
-    public void UpdateGridWithExternalData(CubeTypes[,] cubeTypesValue)
+    public void GetExternalGridToGrid(BlockTypes[,] cubeTypesValue)
     {
-        for (var i = 0; i < cubeTypes.Length; i++)
+        for (var i = 0; i < blockTypes.Length; i++)
         {
-            for (var j = 0; j < cubeTypes[i].columns.Length; j++)
+            for (var j = 0; j < blockTypes[i].columns.Length; j++)
             {
-                cubeTypes[i].columns[j] = cubeTypesValue[i, j];
+                blockTypes[i].columns[j] = cubeTypesValue[i, j];
             }
         }
     }

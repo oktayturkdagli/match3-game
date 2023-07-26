@@ -6,19 +6,19 @@ public class InputManager : Singleton<InputManager>
     
     private void OnEnable()
     {
-        LevelManager.levelLoadedEvent += EnableClicking;
-        LevelManager.levelSuccesedEvent += DisableClicking;
-        LevelManager.levelFailedEvent += DisableClicking;
+        LevelManager.OnLevelLoaded += EnableClicking;
+        LevelManager.OnLevelSucceed += DisableClicking;
+        LevelManager.OnLevelFailed += DisableClicking;
     }
     
     private void OnDisable()
     {
-        LevelManager.levelLoadedEvent -= EnableClicking;
-        LevelManager.levelSuccesedEvent -= DisableClicking;
-        LevelManager.levelFailedEvent -= DisableClicking;
+        LevelManager.OnLevelLoaded -= EnableClicking;
+        LevelManager.OnLevelSucceed -= DisableClicking;
+        LevelManager.OnLevelFailed -= DisableClicking;
     }
-    
-    void Update()
+
+    private void Update()
     {
         #if UNITY_EDITOR
         GetEditorInputs();
@@ -45,12 +45,13 @@ public class InputManager : Singleton<InputManager>
         if (MovesPanel.Instance.Moves > 0)
         {
             BoxCollider2D hitCollider = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(touchedPosition)) as BoxCollider2D;
-            if (hitCollider)
-            {
-                GameObject hitObj = hitCollider.gameObject;
-                if (hitObj.CompareTag("Block"))
-                    hitObj.gameObject.GetComponent<CubeBlock>().DoTappedActions();
-            }
+            
+            if (!hitCollider) 
+                return;
+            
+            GameObject hitObj = hitCollider.gameObject;
+            if (hitObj.CompareTag("Block"))
+                hitObj.gameObject.GetComponent<Block>().OnTapped();
         } 
     }
     

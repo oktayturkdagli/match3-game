@@ -7,14 +7,14 @@ public class UIManager : Singleton<UIManager>
     
     private void OnEnable()
     {
-        LevelManager.levelFailedEvent += OpenFailMenu;
-        LevelManager.levelSuccesedEvent += OpenWinMenu;
+        LevelManager.OnLevelFailed += OpenFailMenu;
+        LevelManager.OnLevelSucceed += OpenWinMenu;
     }
     
     private void OnDisable()
     {
-        LevelManager.levelFailedEvent -= OpenFailMenu;
-        LevelManager.levelSuccesedEvent -= OpenWinMenu;
+        LevelManager.OnLevelFailed -= OpenFailMenu;
+        LevelManager.OnLevelSucceed -= OpenWinMenu;
     }
     
     private void OpenWinMenu()

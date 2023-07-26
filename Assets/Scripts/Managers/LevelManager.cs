@@ -5,31 +5,31 @@ using UnityEngine.SceneManagement;
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private Level[] allLevels;
-    [SerializeField] private Level currentLevelData;
+    [SerializeField] private Level currentLevel;
     [SerializeField] private GridManager gridManager;
     public bool isLevelActive = false;
     private int currentLevelIndex;
     
-    public static event Action levelLoadedEvent;
-    public static event Action levelSuccesedEvent;
-    public static event Action levelFailedEvent;
+    public static event Action OnLevelLoaded;
+    public static event Action OnLevelSucceed;
+    public static event Action OnLevelFailed;
     
     public Level CurrentLevelData
     {
-        get => currentLevelData;
-        set => currentLevelData = value;
+        get => currentLevel;
+        set => currentLevel = value;
     }
     
     private void OnEnable()
     {
-        GoalPanel.allGoalsEndedEvent += LevelSucceed;
-        GoalPanel.goalsFailedEvent += LevelFailed;
+        GoalPanel.OnAllGoalsEnded += LevelSucceed;
+        GoalPanel.OnGoalsFailed += LevelFailed;
     }
     
     private void OnDisable()
     {
-        GoalPanel.allGoalsEndedEvent -= LevelSucceed;
-        GoalPanel.goalsFailedEvent -= LevelFailed;
+        GoalPanel.OnAllGoalsEnded -= LevelSucceed;
+        GoalPanel.OnGoalsFailed -= LevelFailed;
     }
     
     private void Start()
@@ -40,32 +40,32 @@ public class LevelManager : Singleton<LevelManager>
     private void LoadLevel()
     {
         currentLevelIndex = PlayerPrefs.GetInt("Level", 0) % allLevels.Length;
-        currentLevelData = allLevels[currentLevelIndex];
-        gridManager.currentLevelData = currentLevelData;
+        currentLevel = allLevels[currentLevelIndex];
+        gridManager.currentLevel = currentLevel;
         gridManager.LoadLevelDataToGridManager();
-        gridManager.SpawnStartingBlocks();
+        gridManager.SpawnInitialBlocks();
         gridManager.SetGridCornerSize();
         isLevelActive = true;
-        levelLoadedEvent?.Invoke();
+        OnLevelLoaded?.Invoke();
     }
-    
-    public void LevelFailed()
+
+    private void LevelFailed()
     {
         if (isLevelActive)
         {
             isLevelActive = false;
-            levelFailedEvent?.Invoke();
+            OnLevelFailed?.Invoke();
         }
     }
-    
-    public void LevelSucceed()
+
+    private void LevelSucceed()
     {
         if (isLevelActive)
         {
             isLevelActive = false;
             currentLevelIndex += 1;
             PlayerPrefs.SetInt("Level", currentLevelIndex);
-            levelSuccesedEvent?.Invoke();
+            OnLevelSucceed?.Invoke();
         }
     }
     

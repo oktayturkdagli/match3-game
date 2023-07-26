@@ -23,7 +23,7 @@ public class GridManagerEditor : Editor
     private int redCubeGoal = 0;
     private int yellowCubeGoal = 0;
     
-    private CubeTypes[,] cubeTypes = new CubeTypes[1, 1];
+    private BlockTypes[,] cubeTypes = new BlockTypes[1, 1];
 
     private void OnEnable()
     {
@@ -132,7 +132,7 @@ public class GridManagerEditor : Editor
             GridManager.gameGrid.GridSizeX = gridSizeX;
             GridManager.gameGrid.GridSizeY = gridSizeY;
             
-            GridManager.CreateGrid();
+            GridManager.InitializeGrid();
             FillBlocksArrays();
         }
         EditorGUILayout.EndHorizontal();
@@ -171,7 +171,7 @@ public class GridManagerEditor : Editor
             {
                 EditorGUILayout.BeginVertical();
                 GUILayout.Label("Cell " + j + "-" + i, GUILayout.Width(70));
-                cubeTypes[j, i] = (CubeTypes)EditorGUILayout.EnumPopup(cubeTypes[j, i], GUILayout.Width(40));
+                cubeTypes[j, i] = (BlockTypes)EditorGUILayout.EnumPopup(cubeTypes[j, i], GUILayout.Width(40));
                 EditorGUILayout.EndVertical();
             }
             EditorGUILayout.EndHorizontal();
@@ -191,8 +191,8 @@ public class GridManagerEditor : Editor
             {
                 for (var j = 0; j < gridSizeX; j++)
                 {
-                    CubeTypes randomCube = (CubeTypes)Random.Range(0, System.Enum.GetValues(typeof(CubeTypes)).Length);
-                    cubeTypes[j, i] = randomCube;
+                    BlockTypes randomBlock = (BlockTypes)Random.Range(0, System.Enum.GetValues(typeof(BlockTypes)).Length);
+                    cubeTypes[j, i] = randomBlock;
                 }
             }
             
@@ -207,23 +207,23 @@ public class GridManagerEditor : Editor
     
     private void FillBlocksArrays()
     {
-        cubeTypes = new CubeTypes[gridSizeX, gridSizeY];
+        cubeTypes = new BlockTypes[gridSizeX, gridSizeY];
         
-        GridManager.TransferLevelDataToGridManager();
+        GridManager.GetCurrentLevelGridToGridManager();
         for (var i = 0; i < gridSizeY; i++)
         {
             for (var j = 0; j < gridSizeX; j++)
             {
-                cubeTypes[j, i] = GridManager.cubeTypes[j, i];
+                cubeTypes[j, i] = GridManager.blockTypes[j, i];
             }
         }
     }
     
     private void UpdateCurrentLevelData()
     {
-        GridManager.UpdateGridManagerWithExternalData(cubeTypes);
+        GridManager.GetExternalGridToGridManager(cubeTypes);
         GridManager.SaveGridData();
-        EditorUtility.SetDirty(GridManager.currentLevelData);
+        EditorUtility.SetDirty(GridManager.currentLevel);
         EditorUtility.SetDirty(GridManager);
     }
 }
