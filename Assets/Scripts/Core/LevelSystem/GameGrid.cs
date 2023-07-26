@@ -34,13 +34,13 @@ public class GameGrid
         } 
     }
     
-    public void GetExternalGridToGrid(BlockTypes[,] cubeTypesValue)
+    public void GetExternalGridToGrid(BlockTypes[,] blockTypeValues)
     {
         for (var i = 0; i < blockTypes.Length; i++)
         {
             for (var j = 0; j < blockTypes[i].columns.Length; j++)
             {
-                blockTypes[i].columns[j] = cubeTypesValue[i, j];
+                blockTypes[i].columns[j] = blockTypeValues[i, j];
             }
         }
     }

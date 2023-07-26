@@ -12,14 +12,14 @@ public class Block : MonoBehaviour
     public BlockTypes blockType;
     public bool canTapped = true;
     
-    public static event Action<int, int> OnCubeLeavedGrid;
+    public static event Action<int, int> OnBlockLeavedGrid;
     
     public void Initialize()
     {
         spriteRendererReference = gameObject.GetComponentInChildren<SpriteRenderer>();
         spriteRendererReference.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         spriteRendererReference.sortingOrder = -(int)gridIndex.y + 1;
-        spriteRendererReference.sprite = GameManager.Instance.sharedData.GetCubeSprite(blockType);
+        spriteRendererReference.sprite = GameManager.Instance.sharedData.GetBlockSprite(blockType);
     }
     
     public void OnTapped()
@@ -34,7 +34,7 @@ public class Block : MonoBehaviour
         
         // Do tapped actions
         canTapped = false;
-        AudioManager.Instance.PlayCubeExplosionAudio();
+        AudioManager.Instance.PlayBlockExplosionAudio();
         MovesPanel.Instance.Moves -= 1;
         
         // Destroy same type neighbours
@@ -43,7 +43,7 @@ public class Block : MonoBehaviour
         {
             Block block = neighbour.gameObject.GetComponent<Block>();
             block.canTapped = false;
-            EffectsController.Instance.PlayCubeFragmentationEffect(neighbour.transform.position, block.blockType);
+            EffectsController.Instance.PlayBlockFragmentationEffect(neighbour.transform.position, block.blockType);
             block.placementPosition = null;
             DOTween.Kill(neighbour);
             neighbour.transform.DOKill();
@@ -52,12 +52,12 @@ public class Block : MonoBehaviour
             {
                 block.SetSortingLayerName("UI");
                 block.SetSortingOrder(10);
-                OnCubeLeavedGrid?.Invoke((int)gridIndex.x, (int)gridIndex.y);
+                OnBlockLeavedGrid?.Invoke((int)gridIndex.x, (int)gridIndex.y);
                 float arriveTime = 0.7f + (index * 0.15f);
                 Vector3 goalPosition = GoalPanel.Instance.GetGoalPosition(blockType);
                 neighbour.transform.DOMove(goalPosition, arriveTime).SetEase(Ease.InOutBack).OnComplete(() =>
                 {
-                    AudioManager.Instance.PlayCubeCollectAudio();
+                    AudioManager.Instance.PlayBlockCollectAudio();
                     GoalPanel.Instance.DecreaseGoal(blockType);
                     Destroy(neighbour);
                 });

@@ -22,12 +22,12 @@ public class GridManager : MonoBehaviour
     
     private void OnEnable()
     {
-        Block.OnCubeLeavedGrid += ClearCell;
+        Block.OnBlockLeavedGrid += ClearCell;
     }
     
     private void OnDisable()
     {
-        Block.OnCubeLeavedGrid -= ClearCell;
+        Block.OnBlockLeavedGrid -= ClearCell;
     }
     
     public void InitializeGrid()
@@ -58,16 +58,16 @@ public class GridManager : MonoBehaviour
         }
     }
     
-    public void GetExternalGridToGridManager(BlockTypes[,] newCubes)
+    public void GetExternalGridToGridManager(BlockTypes[,] newBlock)
     {
         // GridManager is updated with external data
-        blockTypes = new BlockTypes[newCubes.GetLength(0), newCubes.GetLength(1)];
+        blockTypes = new BlockTypes[newBlock.GetLength(0), newBlock.GetLength(1)];
         
         for (var i = 0; i < blockTypes.GetLength(0); i++)
         {
             for (var j = 0; j < blockTypes.GetLength(1); j++)
             {
-                blockTypes[i, j] = newCubes[i, j];
+                blockTypes[i, j] = newBlock[i, j];
             }
         }
     }

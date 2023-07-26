@@ -34,7 +34,7 @@ public class SharedData : ScriptableObject
     public Sprite yellowBSprite;
     public Sprite yellowCSprite;
     
-    public Sprite GetCubeSprite(BlockTypes blockType)
+    public Sprite GetBlockSprite(BlockTypes blockType)
     {
         switch (blockType)
         {

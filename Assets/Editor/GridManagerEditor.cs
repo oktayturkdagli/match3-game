@@ -32,12 +32,12 @@ public class GridManagerEditor : Editor
         gridSizeY = GridManager.gameGrid.GridSizeY;
         movesCount = GridManager.moves;
             
-        blueCubeGoal = GridManager.goals.blueCubeCount;
-        greenCubeGoal = GridManager.goals.greenCubeCount;
-        pinkCubeGoal = GridManager.goals.pinkCubeCount;
-        purpleCubeGoal = GridManager.goals.purpleCubeCount;
-        redCubeGoal = GridManager.goals.redCubeCount;
-        yellowCubeGoal = GridManager.goals.yellowCubeCount;
+        blueCubeGoal = GridManager.goals.blueBlockCount;
+        greenCubeGoal = GridManager.goals.greenBlockCount;
+        pinkCubeGoal = GridManager.goals.pinkBlockCount;
+        purpleCubeGoal = GridManager.goals.purpleBlockCount;
+        redCubeGoal = GridManager.goals.redBlockCount;
+        yellowCubeGoal = GridManager.goals.yellowBlockCount;
     }
     
     private void OnSceneGUI()
@@ -55,12 +55,12 @@ public class GridManagerEditor : Editor
                 if (GUILayout.Button("Update Moves Count and Goals For Current Level"))
                 {
                     GridManager.moves = movesCount;
-                    GridManager.goals.blueCubeCount = blueCubeGoal;
-                    GridManager.goals.greenCubeCount = greenCubeGoal;
-                    GridManager.goals.pinkCubeCount = pinkCubeGoal;
-                    GridManager.goals.purpleCubeCount = purpleCubeGoal;
-                    GridManager.goals.redCubeCount = redCubeGoal;
-                    GridManager.goals.yellowCubeCount = yellowCubeGoal;
+                    GridManager.goals.blueBlockCount = blueCubeGoal;
+                    GridManager.goals.greenBlockCount = greenCubeGoal;
+                    GridManager.goals.pinkBlockCount = pinkCubeGoal;
+                    GridManager.goals.purpleBlockCount = purpleCubeGoal;
+                    GridManager.goals.redBlockCount = redCubeGoal;
+                    GridManager.goals.yellowBlockCount = yellowCubeGoal;
                     
                     UpdateCurrentLevelData();
                 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GoalPanel : Singleton<GoalPanel>
 {
-    [SerializeField] private GoalObject blueCubeGoal;
-    [SerializeField] private GoalObject greenCubeGoal;
-    [SerializeField] private GoalObject pinkCubeGoal;
-    [SerializeField] private GoalObject purpleCubeGoal;
-    [SerializeField] private GoalObject redCubeGoal;
-    [SerializeField] private GoalObject yellowCubeGoal;
+    [SerializeField] private GoalObject blueBlockGoal;
+    [SerializeField] private GoalObject greenBlockGoal;
+    [SerializeField] private GoalObject pinkBlockGoal;
+    [SerializeField] private GoalObject purpleBlockGoal;
+    [SerializeField] private GoalObject redBlockGoal;
+    [SerializeField] private GoalObject yellowBlockGoal;
     
     private Goals currentGoals;
     
@@ -31,25 +32,25 @@ public class GoalPanel : Singleton<GoalPanel>
     {
         currentGoals = LevelManager.Instance.CurrentLevelData.goals;
         
-        blueCubeGoal.Count = currentGoals.blueCubeCount;
-        greenCubeGoal.Count = currentGoals.greenCubeCount;
-        pinkCubeGoal.Count = currentGoals.pinkCubeCount;
-        purpleCubeGoal.Count = currentGoals.purpleCubeCount;
-        redCubeGoal.Count = currentGoals.redCubeCount;
-        yellowCubeGoal.Count = currentGoals.yellowCubeCount;
+        blueBlockGoal.Count = currentGoals.blueBlockCount;
+        greenBlockGoal.Count = currentGoals.greenBlockCount;
+        pinkBlockGoal.Count = currentGoals.pinkBlockCount;
+        purpleBlockGoal.Count = currentGoals.purpleBlockCount;
+        redBlockGoal.Count = currentGoals.redBlockCount;
+        yellowBlockGoal.Count = currentGoals.yellowBlockCount;
         
-        if (blueCubeGoal.Count > 0)
-            blueCubeGoal.gameObject.SetActive(true);
-        if (greenCubeGoal.Count > 0)
-            greenCubeGoal.gameObject.SetActive(true);
-        if (pinkCubeGoal.Count > 0)
-            pinkCubeGoal.gameObject.SetActive(true);
-        if (purpleCubeGoal.Count > 0)
-            purpleCubeGoal.gameObject.SetActive(true);
-        if (redCubeGoal.Count > 0)
-            redCubeGoal.gameObject.SetActive(true);
-        if (yellowCubeGoal.Count > 0)
-            yellowCubeGoal.gameObject.SetActive(true);
+        if (blueBlockGoal.Count > 0)
+            blueBlockGoal.gameObject.SetActive(true);
+        if (greenBlockGoal.Count > 0)
+            greenBlockGoal.gameObject.SetActive(true);
+        if (pinkBlockGoal.Count > 0)
+            pinkBlockGoal.gameObject.SetActive(true);
+        if (purpleBlockGoal.Count > 0)
+            purpleBlockGoal.gameObject.SetActive(true);
+        if (redBlockGoal.Count > 0)
+            redBlockGoal.gameObject.SetActive(true);
+        if (yellowBlockGoal.Count > 0)
+            yellowBlockGoal.gameObject.SetActive(true);
     }
     
     public void DecreaseGoal(BlockTypes blockType)
@@ -67,17 +68,17 @@ public class GoalPanel : Singleton<GoalPanel>
     {
         bool areAllGoalsEnded = true;
         
-        if (blueCubeGoal.gameObject.activeSelf && blueCubeGoal.Count > 0)
+        if (blueBlockGoal.gameObject.activeSelf && blueBlockGoal.Count > 0)
             areAllGoalsEnded = false;
-        if (greenCubeGoal.gameObject.activeSelf && greenCubeGoal.Count > 0)
+        if (greenBlockGoal.gameObject.activeSelf && greenBlockGoal.Count > 0)
             areAllGoalsEnded = false;
-        if (pinkCubeGoal.gameObject.activeSelf && pinkCubeGoal.Count > 0)
+        if (pinkBlockGoal.gameObject.activeSelf && pinkBlockGoal.Count > 0)
             areAllGoalsEnded = false;
-        if (purpleCubeGoal.gameObject.activeSelf && purpleCubeGoal.Count > 0)
+        if (purpleBlockGoal.gameObject.activeSelf && purpleBlockGoal.Count > 0)
             areAllGoalsEnded = false;
-        if (redCubeGoal.gameObject.activeSelf && redCubeGoal.Count > 0)
+        if (redBlockGoal.gameObject.activeSelf && redBlockGoal.Count > 0)
             areAllGoalsEnded = false;
-        if (yellowCubeGoal.gameObject.activeSelf && yellowCubeGoal.Count > 0)
+        if (yellowBlockGoal.gameObject.activeSelf && yellowBlockGoal.Count > 0)
             areAllGoalsEnded = false;
         
         return areAllGoalsEnded;
@@ -94,17 +95,17 @@ public class GoalPanel : Singleton<GoalPanel>
         switch (blockType)
         {
             case BlockTypes.Blue:
-                return blueCubeGoal.Count > 0;
+                return blueBlockGoal.Count > 0;
             case BlockTypes.Green:
-                return greenCubeGoal.Count > 0;
+                return greenBlockGoal.Count > 0;
             case BlockTypes.Pink:
-                return pinkCubeGoal.Count > 0;
+                return pinkBlockGoal.Count > 0;
             case BlockTypes.Purple:
-                return purpleCubeGoal.Count > 0;
+                return purpleBlockGoal.Count > 0;
             case BlockTypes.Red:
-                return redCubeGoal.Count > 0;
+                return redBlockGoal.Count > 0;
             case BlockTypes.Yellow:
-                return yellowCubeGoal.Count > 0;
+                return yellowBlockGoal.Count > 0;
             
             default:
                 return false;
@@ -116,19 +117,19 @@ public class GoalPanel : Singleton<GoalPanel>
         switch (blockType)
         {
             case BlockTypes.Blue:
-                return blueCubeGoal;
+                return blueBlockGoal;
             case BlockTypes.Green:
-                return greenCubeGoal;
+                return greenBlockGoal;
             case BlockTypes.Pink:
-                return pinkCubeGoal;
+                return pinkBlockGoal;
             case BlockTypes.Purple:
-                return purpleCubeGoal;
+                return purpleBlockGoal;
             case BlockTypes.Red:
-                return redCubeGoal;
+                return redBlockGoal;
             case BlockTypes.Yellow:
-                return yellowCubeGoal;
+                return yellowBlockGoal;
             default: 
-                return blueCubeGoal;
+                return blueBlockGoal;
         }
     }
     
@@ -137,19 +138,19 @@ public class GoalPanel : Singleton<GoalPanel>
         switch (blockType)
         {
             case BlockTypes.Blue:
-                return blueCubeGoal.gameObject.transform.position;
+                return blueBlockGoal.gameObject.transform.position;
             case BlockTypes.Green:
-                return greenCubeGoal.gameObject.transform.position;
+                return greenBlockGoal.gameObject.transform.position;
             case BlockTypes.Pink:
-                return pinkCubeGoal.gameObject.transform.position;
+                return pinkBlockGoal.gameObject.transform.position;
             case BlockTypes.Purple:
-                return purpleCubeGoal.gameObject.transform.position;
+                return purpleBlockGoal.gameObject.transform.position;
             case BlockTypes.Red:
-                return redCubeGoal.gameObject.transform.position;
+                return redBlockGoal.gameObject.transform.position;
             case BlockTypes.Yellow:
-                return yellowCubeGoal.gameObject.transform.position;
+                return yellowBlockGoal.gameObject.transform.position;
             default: 
-                return redCubeGoal.gameObject.transform.position;
+                return redBlockGoal.gameObject.transform.position;
         }
     }
 }

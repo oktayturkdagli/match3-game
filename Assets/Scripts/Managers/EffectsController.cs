@@ -2,7 +2,7 @@
 
 public class EffectsController : Singleton<EffectsController>
 {
-    [SerializeField] private GameObject cubeFragmentationEffectPrefab;
+    [SerializeField] private GameObject blockFragmentationEffectPrefab;
     
     [SerializeField] private Color blueColor;
     [SerializeField] private Color greenColor;
@@ -11,19 +11,19 @@ public class EffectsController : Singleton<EffectsController>
     [SerializeField] private Color redColor;
     [SerializeField] private Color yellowColor;
     
-    public void PlayCubeFragmentationEffect(Vector3 spawnPosition, BlockTypes blockType)
+    public void PlayBlockFragmentationEffect(Vector3 spawnPosition, BlockTypes blockType)
     {
-        GameObject instantiatedEffect = Instantiate(cubeFragmentationEffectPrefab, spawnPosition, Quaternion.identity);
+        GameObject instantiatedEffect = Instantiate(blockFragmentationEffectPrefab, spawnPosition, Quaternion.identity);
         var mainModule = instantiatedEffect.GetComponent<ParticleSystem>().main;
         var subModule = instantiatedEffect.transform.GetChild(0).GetComponent<ParticleSystem>().main;
-        var blockColor = DetectCubeColor(blockType);
+        var blockColor = DetectBlockColor(blockType);
         mainModule.startColor = blockColor;
         subModule.startColor = blockColor;
         instantiatedEffect.GetComponent<ParticleSystem>().Play();
         Destroy(instantiatedEffect, 3f);
     }
     
-    private Color DetectCubeColor(BlockTypes blockType)
+    private Color DetectBlockColor(BlockTypes blockType)
     {
         switch (blockType)
         {

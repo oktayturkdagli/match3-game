@@ -2,16 +2,16 @@
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] private AudioSource cubeExplosionAudio;
-    [SerializeField] private AudioSource cubeCollectAudio;
+    [SerializeField] private AudioSource blockExplosionAudio;
+    [SerializeField] private AudioSource blockCollectAudio;
     
-    public void PlayCubeExplosionAudio()
+    public void PlayBlockExplosionAudio()
     {
-        cubeExplosionAudio.Play();
+        blockExplosionAudio.Play();
     }
     
-    public void PlayCubeCollectAudio()
+    public void PlayBlockCollectAudio()
     {
-        cubeCollectAudio.Play();
+        blockCollectAudio.Play();
     }
 }
