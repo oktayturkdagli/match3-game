@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
     [HideInInspector] public int moves;
     [HideInInspector] public BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     
-    public Dictionary<int, int> changingColumns = new Dictionary<int, int>(); // Key is column index, Value is changing block count
+    public Dictionary<int, int> incompleteColumnsDictionary = new Dictionary<int, int>(); // Key is column index, Value is changed block count
     
     private void OnEnable()
     {
@@ -138,21 +138,21 @@ public class GridManager : MonoBehaviour
         }
     }
     
-    public void AddNewChangingColumn(int columnIndex)
+    public void AddIncompleteColumn(int columnIndex)
     {
-        if (changingColumns.ContainsKey(columnIndex))
-            changingColumns[columnIndex] += 1;
+        if (incompleteColumnsDictionary.ContainsKey(columnIndex))
+            incompleteColumnsDictionary[columnIndex] += 1;
         else
-            changingColumns.Add(columnIndex, 1);
+            incompleteColumnsDictionary.Add(columnIndex, 1);
     }
     
-    public void DecreaseChangingColumn(int columnIndex)
+    public void DecreaseIncompleteColumn(int columnIndex)
     {
-        if (changingColumns.ContainsKey(columnIndex))
+        if (incompleteColumnsDictionary.ContainsKey(columnIndex))
         {
-            changingColumns[columnIndex] -= 1;
-            if (changingColumns[columnIndex] == 0)
-                changingColumns.Remove(columnIndex);
+            incompleteColumnsDictionary[columnIndex] -= 1;
+            if (incompleteColumnsDictionary[columnIndex] == 0)
+                incompleteColumnsDictionary.Remove(columnIndex);
         }
     }
     

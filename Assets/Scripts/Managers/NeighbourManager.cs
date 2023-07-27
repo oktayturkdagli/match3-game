@@ -9,8 +9,8 @@ public class NeighbourManager : Singleton<NeighbourManager>
     public List<GameObject> FindSameTypeNeighbours(BlockTypes blockType, Vector2 gridIndex)
     {
         neighbours.Clear();
-        gridManager.changingColumns.Clear();
-        gridManager.AddNewChangingColumn((int)gridIndex.x);
+        gridManager.incompleteColumnsDictionary.Clear();
+        gridManager.AddIncompleteColumn((int)gridIndex.x);
         neighbours.Add(gridManager.allBlockObjects[(int)gridIndex.x].columns[(int)gridIndex.y]);
         
         RecursiveNeighbourSearch(blockType, gridIndex);
@@ -30,7 +30,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
             {
                 if (!neighbours.Contains(gridManager.allBlockObjects[x + 1].columns[y]))
                 {
-                    gridManager.AddNewChangingColumn(x + 1);
+                    gridManager.AddIncompleteColumn(x + 1);
                     neighbours.Add(gridManager.allBlockObjects[x + 1].columns[y]);
                     RecursiveNeighbourSearch(blockType, new Vector2(x + 1, y));
                 }
@@ -44,7 +44,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
             {
                 if (!neighbours.Contains(gridManager.allBlockObjects[x].columns[y + 1]))
                 {
-                    gridManager.AddNewChangingColumn(x);
+                    gridManager.AddIncompleteColumn(x);
                     neighbours.Add(gridManager.allBlockObjects[x].columns[y + 1]);
                     RecursiveNeighbourSearch(blockType, new Vector2(x, y + 1));
                 }
@@ -58,7 +58,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
             {
                 if (!neighbours.Contains(gridManager.allBlockObjects[x - 1].columns[y]))
                 {
-                    gridManager.AddNewChangingColumn(x - 1);
+                    gridManager.AddIncompleteColumn(x - 1);
                     neighbours.Add(gridManager.allBlockObjects[x - 1].columns[y]);
                     RecursiveNeighbourSearch(blockType, new Vector2(x - 1, y));
                 }
@@ -72,7 +72,7 @@ public class NeighbourManager : Singleton<NeighbourManager>
             {
                 if (!neighbours.Contains(gridManager.allBlockObjects[x].columns[y - 1]))
                 {
-                    gridManager.AddNewChangingColumn(x);
+                    gridManager.AddIncompleteColumn(x);
                     neighbours.Add(gridManager.allBlockObjects[x].columns[y - 1]);
                     RecursiveNeighbourSearch(blockType, new Vector2(x, y - 1));
                 }

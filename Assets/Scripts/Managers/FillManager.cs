@@ -8,9 +8,9 @@ public class FillManager : Singleton<FillManager>
     
     public void Fill()
     {
-        for (var i = 0; i < gridManager.changingColumns.Count; i++)
+        for (var i = 0; i < gridManager.incompleteColumnsDictionary.Count; i++)
         {
-            KeyValuePair<int, int> item = gridManager.changingColumns.ElementAt(i);
+            KeyValuePair<int, int> item = gridManager.incompleteColumnsDictionary.ElementAt(i);
             var itemKey = item.Key;
             var itemValue = item.Value;
             

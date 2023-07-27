@@ -10,9 +10,9 @@ public class FallManager : Singleton<FallManager>
     
     public void Fall()
     {
-        for (var i = 0; i < gridManager.changingColumns.Count; i++)
+        for (var i = 0; i < gridManager.incompleteColumnsDictionary.Count; i++)
         {
-            var item = gridManager.changingColumns.ElementAt(i);
+            var item = gridManager.incompleteColumnsDictionary.ElementAt(i);
             var itemKey = item.Key;
             var itemValue = item.Value;
             
@@ -30,7 +30,7 @@ public class FallManager : Singleton<FallManager>
             }
         }
         
-        gridManager.changingColumns = new Dictionary<int, int>();
+        gridManager.incompleteColumnsDictionary = new Dictionary<int, int>();
     }
     
     private GameObject AddRandomBlockToGrid(int x, int y, Vector3 spawnPosition, Transform targetTransform)
