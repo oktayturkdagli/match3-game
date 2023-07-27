@@ -30,6 +30,10 @@ public class GridManagerEditor : Editor
         GridManager.LoadLevelDataToGridManager();
         gridSizeX = GridManager.gameGrid.GridSizeX;
         gridSizeY = GridManager.gameGrid.GridSizeY;
+        numberOfColors = GridManager.numberOfColors;
+        groupA = GridManager.groupA;
+        groupB = GridManager.groupB;
+        groupC = GridManager.groupC;
         movesCount = GridManager.moves;
             
         blueCubeGoal = GridManager.goals.blueBlockCount;
@@ -73,8 +77,7 @@ public class GridManagerEditor : Editor
                 GUIStyle guiStyle = new GUIStyle("BoldLabel");
                 guiStyle.fontSize = 15;
                 GUILayout.Label(GridManager.gameObject.name, guiStyle, GUILayout.Height(20));
-                DisplayGridSizePanel();
-                DisplayGroupPanel();
+                DisplayGridHeaderPanel();
                 DisplayGrid();
                 DisplayButtons();
             }
@@ -119,7 +122,7 @@ public class GridManagerEditor : Editor
         EditorGUILayout.EndHorizontal();
     }
     
-    private void DisplayGridSizePanel()
+    private void DisplayGridHeaderPanel()
     {
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("GameGrid Size (X/Y): ", GUILayout.Width(150), GUILayout.Height(15));
@@ -132,6 +135,11 @@ public class GridManagerEditor : Editor
             GridManager.gameGrid.GridSizeX = gridSizeX;
             GridManager.gameGrid.GridSizeY = gridSizeY;
             
+            GridManager.numberOfColors = numberOfColors;
+            GridManager.groupA = groupA;
+            GridManager.groupB = groupB;
+            GridManager.groupC = groupC;
+            
             GridManager.InitializeGrid();
             FillBlocksArrays();
         }
@@ -143,10 +151,7 @@ public class GridManagerEditor : Editor
         if (numberOfColors > 6)
             numberOfColors = 6;
         EditorGUILayout.EndHorizontal();
-    }
-    
-    private void DisplayGroupPanel()
-    {
+        
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Group Settings (A/B/C): ", GUILayout.Width(150), GUILayout.Height(15));
         groupA = EditorGUILayout.IntField(groupA, EditorStyles.textArea, GUILayout.Width(40));
@@ -154,7 +159,7 @@ public class GridManagerEditor : Editor
         groupC = EditorGUILayout.IntField(groupC, EditorStyles.textArea, GUILayout.Width(40));
         EditorGUILayout.EndHorizontal();
     }
-    
+
     private void DisplayGrid()
     {
         GUILayout.Space(15f);
@@ -191,7 +196,7 @@ public class GridManagerEditor : Editor
             {
                 for (var j = 0; j < gridSizeX; j++)
                 {
-                    BlockTypes randomBlock = (BlockTypes)Random.Range(0, System.Enum.GetValues(typeof(BlockTypes)).Length);
+                    BlockTypes randomBlock = (BlockTypes)Random.Range(0, numberOfColors);
                     cubeTypes[j, i] = randomBlock;
                 }
             }
@@ -221,8 +226,9 @@ public class GridManagerEditor : Editor
     
     private void UpdateCurrentLevelData()
     {
+        
         GridManager.GetExternalGridToGridManager(cubeTypes);
-        GridManager.SaveGridData();
+        GridManager.SaveGridManagerToLevelData();
         EditorUtility.SetDirty(GridManager.currentLevel);
         EditorUtility.SetDirty(GridManager);
     }

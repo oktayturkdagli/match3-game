@@ -15,6 +15,10 @@ public class GridManager : MonoBehaviour
     
     [HideInInspector] public GameGrid gameGrid;
     [HideInInspector] public Goals goals;
+    [HideInInspector] public int numberOfColors;
+    [HideInInspector] public int groupA;
+    [HideInInspector] public int groupB;
+    [HideInInspector] public int groupC;
     [HideInInspector] public int moves;
     [HideInInspector] public BlockTypes[,] blockTypes = new BlockTypes[1, 1];
     
@@ -35,10 +39,28 @@ public class GridManager : MonoBehaviour
         gameGrid.Initialize();
     }
     
+    public void GetExternalGridToGridManager(BlockTypes[,] newGrid)
+    {
+        // GridManager is updated with external data
+        blockTypes = new BlockTypes[newGrid.GetLength(0), newGrid.GetLength(1)];
+        
+        for (var i = 0; i < blockTypes.GetLength(0); i++)
+        {
+            for (var j = 0; j < blockTypes.GetLength(1); j++)
+            {
+                blockTypes[i, j] = newGrid[i, j];
+            }
+        }
+    }
+    
     public void LoadLevelDataToGridManager()
     {
         gameGrid = currentLevel.gameGrid;
         goals = currentLevel.goals;
+        numberOfColors = currentLevel.numberOfColors;
+        groupA = currentLevel.groupA;
+        groupB = currentLevel.groupB;
+        groupC = currentLevel.groupC;
         moves = currentLevel.moves;
         
         GetCurrentLevelGridToGridManager();
@@ -58,23 +80,13 @@ public class GridManager : MonoBehaviour
         }
     }
     
-    public void GetExternalGridToGridManager(BlockTypes[,] newBlock)
-    {
-        // GridManager is updated with external data
-        blockTypes = new BlockTypes[newBlock.GetLength(0), newBlock.GetLength(1)];
-        
-        for (var i = 0; i < blockTypes.GetLength(0); i++)
-        {
-            for (var j = 0; j < blockTypes.GetLength(1); j++)
-            {
-                blockTypes[i, j] = newBlock[i, j];
-            }
-        }
-    }
-    
-    public void SaveGridData()
+    public void SaveGridManagerToLevelData()
     {
         gameGrid.GetExternalGridToGrid(blockTypes);
+        currentLevel.numberOfColors = numberOfColors;
+        currentLevel.groupA = groupA;
+        currentLevel.groupB = groupB;
+        currentLevel.groupC = groupC;
         currentLevel.moves = moves;
         SpawnInitialBlocks();
         SetGridCornerSize();
