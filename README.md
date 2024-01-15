@@ -3,6 +3,9 @@ A match-3 game is a type of puzzle video game where the primary objective is to 
 <br/><br/>
 
 
-## 🖼️ Screenshots
-<img src="Screenshots/1.png" width="240" height="440">
+## 🖼️ Visuals
+
+https://github.com/oktayturkdagli/match3-game/assets/61520877/b6d42420-1ebf-4bbf-9537-9b6790b5e049
+
+
 <br/><br/>
